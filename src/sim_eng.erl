@@ -104,7 +104,7 @@ init([]) ->
 %%--------------------------------------------------------------------
 handle_call({new_P, Mod, Func, Args}, From, State) ->
 	io:format("Creating new Process from module ~p~n", [Mod]),
-	Pid = spawn_links(Mod, Func, Args),
+	Pid = spawn_link(Mod, Func, Args),
 	io:format("Adding new process ~p~n", [Pid]),
 
 	NewProcesses = [Pid|State#sim_data.processes],
