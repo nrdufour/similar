@@ -13,7 +13,7 @@
 -module(sm_debug).
 -author("Nicolas R Dufour").
 
--include("sim_data.hrl").
+-include("sm_data.hrl").
 
 r(State) ->
 	{reply, State#sim_data.resources, State}.

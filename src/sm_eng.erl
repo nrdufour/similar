@@ -11,7 +11,7 @@
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
 
--module(sim_eng).
+-module(sm_eng).
 -behaviour(gen_server).
 
 %% API
@@ -22,7 +22,7 @@
         terminate/2, code_change/3]).
 -compile(export_all).
 
--include("sim_data.hrl").
+-include("sm_data.hrl").
 
 
 %%====================================================================
