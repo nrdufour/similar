@@ -120,19 +120,19 @@ handle_call({trace, off}, _From, State) ->
 	{reply, ok, NewState};
 
 handle_call({debug, r}, _From, State) ->
-	{reply, State#sim_data.resources, State};
+	sm_debug:r(State);
 
 handle_call({debug, p}, _From, State) ->
-	{reply, State#sim_data.processes, State};
+	sm_debug:p(State);
 
 handle_call({debug, e}, _From, State) ->
-	{reply, State#sim_data.events, State};
+	sm_debug:e(State);
 
 handle_call({debug, s}, _From, State) ->
-	{reply, State#sim_data.props, State};
+	sm_debug:s(State);
 
 handle_call({debug, c}, _From, State) ->
-	{reply, State#sim_data.actives, State};
+	sm_debug:c(State);
 
 handle_call(stop, _From, State) ->
 	{stop, normal, State};
