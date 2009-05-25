@@ -102,7 +102,7 @@ init([]) ->
 %% {stop, Reason, State}
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
-handle_call({new_P, Mod, Func, Args}, From, State) ->
+handle_call({new_P, Mod, Func, Args}, _From, State) ->
 	io:format("Creating new Process from module ~p~n", [Mod]),
 	Pid = spawn_link(Mod, Func, Args),
 	io:format("Adding new process ~p~n", [Pid]),
@@ -143,7 +143,7 @@ handle_call(kill_current, _From, State) ->
 handle_call(reset, _From, State) ->
 	{reply, ok, State};
 
-handle_call({kill, Pid}, _From, State) ->
+handle_call({kill, _Pid}, _From, State) ->
 	{reply, ok, State}.
 
 %%--------------------------------------------------------------------
