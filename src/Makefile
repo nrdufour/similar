@@ -12,7 +12,7 @@ ERL = erl -boot start_clean
 # Here's a list of the erlang modules you want compiling
 # If the modules don't fit onto one line add a \ character 
 # to the end of the line and continue on the next line
-MODS = sm_eng sm_debug foo tester
+MODS = sm_engine sm_debug foo tester
 
 # The first target in any makefile is the default target.
 # If you just type "make" then "make all" is assumed (because

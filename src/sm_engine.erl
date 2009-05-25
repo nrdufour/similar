@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% File : sim_eng.erl
+%%% File : sm_engine.erl
 %%% Author : Nicolas Dufour <nrdufour@gmail.com>
 %%% Created : 2009/05/19
 %%% Description :
@@ -11,7 +11,7 @@
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
 
--module(sm_eng).
+-module(sm_engine).
 -behaviour(gen_server).
 
 %% API

@@ -17,15 +17,15 @@
 
 start() ->
 	%% Start the engine
-	sm_eng:start(),
+	sm_engine:start(),
 
 	%% Add a few processes
-	sm_eng:new_P(foo, loop,[]),
-	sm_eng:new_P(foo, loop,[]),
-	sm_eng:new_P(foo, loop,[]),
+	sm_engine:new_P(foo, loop,[]),
+	sm_engine:new_P(foo, loop,[]),
+	sm_engine:new_P(foo, loop,[]),
 
 	%% Display them
-	io:format("Processes: ~p~n", [sm_eng:p()]),
+	io:format("Processes: ~p~n", [sm_engine:p()]),
 
 	%% Saying good bye
 	io:format("END~n").
