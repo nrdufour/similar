@@ -13,6 +13,8 @@
 -module(sm_debug).
 -author("Nicolas R Dufour").
 
+-export([r/1,p/1,e/1,s/1,c/1]).
+
 -include("sm_data.hrl").
 
 r(State) ->
