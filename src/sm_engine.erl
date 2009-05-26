@@ -15,7 +15,7 @@
 -behaviour(gen_server).
 
 %% API
--export([start/0]).
+-export([start_link/0]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -33,11 +33,13 @@
 %% Function: start() -> {ok,Pid} | ignore | {error,Error}
 %% Description: Starts the server
 %%--------------------------------------------------------------------
-start() ->
+start_link() ->
 	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 stop() ->
-	gen_server:call(?MODULE, stop).
+	gen_server:cast(?MODULE, stop).
+
+%%====================================================================
 
 kill_current() ->
 	gen_server:call(?MODULE, kill_current).
@@ -48,9 +50,8 @@ reset() ->
 kill(Pid) ->
 	gen_server:call(?MODULE, {kill, Pid}). 
 
-%%% DEBUG
+%%====================================================================
 
-%%% TODO change that from r to {debug, r}
 r() ->
 	gen_server:call(?MODULE, {debug, r}).
 
@@ -66,13 +67,15 @@ s() ->
 c() ->
 	gen_server:call(?MODULE, {debug, c}).
 
+%%====================================================================
+
 trace() ->
 	gen_server:call(?MODULE, {trace, on}).
 
 no_trace() ->
 	gen_server:call(?MODULE, {trace, off}).
 
-%%% PROCESSES
+%%====================================================================
 
 new_P(Mod, Func, Args) ->
 	gen_server:call(?MODULE, {new_P, Mod, Func, Args}).
@@ -152,8 +155,8 @@ handle_call({kill, _Pid}, _From, State) ->
 %% {stop, Reason, State}
 %% Description: Handling cast messages
 %%--------------------------------------------------------------------
-handle_cast(_Msg, State) ->
-	{noreply, State}.
+handle_cast(stop, State) ->
+	{stop, normal, State}.
 
 %%--------------------------------------------------------------------
 %% Function: handle_info(Info, State) -> {noreply, State} |

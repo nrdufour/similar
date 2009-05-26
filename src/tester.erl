@@ -17,7 +17,7 @@
 
 start() ->
 	%% Start the engine
-	sm_engine:start(),
+	sm_engine:start_link(),
 
 	%% Add a few processes
 	sm_engine:new_P(foo, loop,[]),
@@ -28,4 +28,5 @@ start() ->
 	io:format("Processes: ~p~n", [sm_engine:p()]),
 
 	%% Saying good bye
+	sm_engine:stop(),
 	io:format("END~n").
