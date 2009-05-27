@@ -146,7 +146,10 @@ handle_call(kill_current, _From, State) ->
 	{reply, ok, State};
 
 handle_call(reset, _From, State) ->
-	{reply, ok, State};
+	lists:foreach(fun internal_kill/1, State#sim_data.processes),
+	lists:foreach(fun internal_kill/1, State#sim_data.resources),
+	NewState = State#sim_data{events = [], resources = [], processes = [], actives = []},
+	{reply, ok, NewState};
 
 handle_call({kill, _Pid}, _From, State) ->
 	{reply, ok, State}.
@@ -191,3 +194,9 @@ code_change(_OldVsn, State, _Extra) ->
 %%% Internal functions
 %%--------------------------------------------------------------------
 
+internal_kill(Pid) ->
+	io:format("Killing process ~p now~n", [Pid]),
+	exit(Pid, terminated).
+
+%% END
+	
