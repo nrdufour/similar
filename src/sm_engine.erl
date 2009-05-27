@@ -93,6 +93,8 @@ new_P(Mod, Func, Args) ->
 %% Description: Initiates the server
 %%--------------------------------------------------------------------
 init([]) ->
+	process_flag(trap_exit, true),
+	io:format("~p starting~n" ,[?MODULE]),
 	{ok, #sim_data{}}.
 
 %%--------------------------------------------------------------------
