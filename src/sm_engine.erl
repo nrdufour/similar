@@ -177,6 +177,7 @@ handle_info(_Info, State) ->
 %% The return value is ignored.
 %%--------------------------------------------------------------------
 terminate(normal, _State) ->
+	io:format("~p stopping~n" ,[?MODULE]),
 	ok.
 
 %%--------------------------------------------------------------------
