@@ -151,8 +151,11 @@ handle_call(reset, _From, State) ->
 	NewState = State#sim_data{events = [], resources = [], processes = [], actives = []},
 	{reply, ok, NewState};
 
-handle_call({kill, _Pid}, _From, State) ->
-	{reply, ok, State}.
+handle_call({kill, Pid}, _From, State) ->
+	exit(Pid, terminated),
+	NewProcesses = lists:delete(Pid, State#sim_data.processes),
+	NewState = State#sim_data{processes = NewProcesses},
+	{reply, ok, NewState}.
 
 %%--------------------------------------------------------------------
 %% Function: handle_cast(Msg, State) -> {noreply, State} |
@@ -169,7 +172,8 @@ handle_cast(stop, State) ->
 %% {stop, Reason, State}
 %% Description: Handling all non call/cast messages
 %%--------------------------------------------------------------------
-handle_info(_Info, State) ->
+handle_info({'EXIT', Pid, Reason}, State) ->
+	io:format("Received an exit signal from ~p with the reason: ~p~n", [Pid, Reason]),
 	{noreply, State}.
 
 %%--------------------------------------------------------------------
