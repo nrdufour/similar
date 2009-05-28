@@ -18,17 +18,17 @@
 -include("sm_data.hrl").
 
 r(State) ->
-	{reply, State#sim_data.resources, State}.
+	{reply, State#sm_data.resources, State}.
 
 p(State) ->
-	{reply, State#sim_data.processes, State}.
+	{reply, State#sm_data.processes, State}.
 
 e(State) ->
-	{reply, State#sim_data.events, State}.
+	{reply, State#sm_data.events, State}.
 
 s(State) ->
-	{reply, State#sim_data.props, State}.
+	{reply, State#sm_data.props, State}.
 
 c(State) ->
-	{reply, State#sim_data.actives, State}.
+	{reply, State#sm_data.actives, State}.
 

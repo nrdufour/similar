@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% File : sim_data.hrl
+%%% File : sm_data.hrl
 %%% Author : Nicolas R Dufour <nrdufour@gmail.com>
 %%% Created : 2009/05/19
 %%% Description :
@@ -11,7 +11,7 @@
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
 
--record(sim_data,
+-record(sm_data,
 	{
 
 	%%% {EvTree; R;E;Current; RealTime; SList; Trace}

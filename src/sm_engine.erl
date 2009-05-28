@@ -95,7 +95,7 @@ new_P(Mod, Func, Args) ->
 init([]) ->
 	process_flag(trap_exit, true),
 	io:format("~p starting~n" ,[?MODULE]),
-	{ok, #sim_data{}}.
+	{ok, #sm_data{}}.
 
 %%--------------------------------------------------------------------
 %% Function:
@@ -112,16 +112,16 @@ handle_call({new_P, Mod, Func, Args}, _From, State) ->
 	Pid = spawn_link(Mod, Func, Args),
 	io:format("Adding new process ~p~n", [Pid]),
 
-	NewProcesses = [Pid|State#sim_data.processes],
-	NewState = State#sim_data{processes = NewProcesses},
+	NewProcesses = [Pid|State#sm_data.processes],
+	NewState = State#sm_data{processes = NewProcesses},
 	{reply, Pid, NewState};
 
 handle_call({trace, on}, _From, State) ->
-	NewState = State#sim_data{trace = true},
+	NewState = State#sm_data{trace = true},
 	{reply, ok, NewState};
 
 handle_call({trace, off}, _From, State) ->
-	NewState = State#sim_data{trace = false},
+	NewState = State#sm_data{trace = false},
 	{reply, ok, NewState};
 
 handle_call({debug, r}, _From, State) ->
@@ -146,15 +146,15 @@ handle_call(kill_current, _From, State) ->
 	{reply, ok, State};
 
 handle_call(reset, _From, State) ->
-	lists:foreach(fun internal_kill/1, State#sim_data.processes),
-	lists:foreach(fun internal_kill/1, State#sim_data.resources),
-	NewState = State#sim_data{events = [], resources = [], processes = [], actives = []},
+	lists:foreach(fun internal_kill/1, State#sm_data.processes),
+	lists:foreach(fun internal_kill/1, State#sm_data.resources),
+	NewState = State#sm_data{events = [], resources = [], processes = [], actives = []},
 	{reply, ok, NewState};
 
 handle_call({kill, Pid}, _From, State) ->
 	exit(Pid, terminated),
-	NewProcesses = lists:delete(Pid, State#sim_data.processes),
-	NewState = State#sim_data{processes = NewProcesses},
+	NewProcesses = lists:delete(Pid, State#sm_data.processes),
+	NewState = State#sm_data{processes = NewProcesses},
 	{reply, ok, NewState}.
 
 %%--------------------------------------------------------------------
