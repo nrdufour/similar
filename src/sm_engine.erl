@@ -34,10 +34,15 @@
 %% Description: Starts the server
 %%--------------------------------------------------------------------
 start_link() ->
+	gen_event:start({local, sm_msg_man}),
+
+	gen_event:add_handler(sm_msg_man, terminal_logger, []),
+
 	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 stop() ->
-	gen_server:cast(?MODULE, stop).
+	gen_server:cast(?MODULE, stop),
+	gen_event:stop(sm_msg_man).
 
 %%====================================================================
 
@@ -94,7 +99,7 @@ new_P(Mod, Func, Args) ->
 %%--------------------------------------------------------------------
 init([]) ->
 	process_flag(trap_exit, true),
-	io:format("~p starting~n" ,[?MODULE]),
+	gen_event:notify(sm_msg_man, {"~p starting" ,[?MODULE]}),
 	{ok, #sm_data{}}.
 
 %%--------------------------------------------------------------------
@@ -108,9 +113,9 @@ init([]) ->
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
 handle_call({new_P, Mod, Func, Args}, _From, State) ->
-	io:format("Creating new Process from module ~p~n", [Mod]),
+	gen_event:notify(sm_msg_man, {"Creating new Process from module ~p", [Mod]}),
 	Pid = spawn_link(Mod, Func, Args),
-	io:format("Adding new process ~p~n", [Pid]),
+	gen_event:notify(sm_msg_man, {"Adding new process ~p", [Pid]}),
 
 	NewProcesses = [Pid|State#sm_data.processes],
 	NewState = State#sm_data{processes = NewProcesses},
@@ -173,7 +178,7 @@ handle_cast(stop, State) ->
 %% Description: Handling all non call/cast messages
 %%--------------------------------------------------------------------
 handle_info({'EXIT', Pid, Reason}, State) ->
-	io:format("Received an exit signal from ~p with the reason: ~p~n", [Pid, Reason]),
+	gen_event:notify(sm_msg_man, {"Received an exit signal from ~p with the reason: ~p", [Pid, Reason]}),
 	{noreply, State}.
 
 %%--------------------------------------------------------------------
@@ -184,7 +189,7 @@ handle_info({'EXIT', Pid, Reason}, State) ->
 %% The return value is ignored.
 %%--------------------------------------------------------------------
 terminate(normal, _State) ->
-	io:format("~p stopping~n" ,[?MODULE]),
+	gen_event:notify(sm_msg_man, {"~p stopping" ,[?MODULE]}),
 	ok.
 
 %%--------------------------------------------------------------------
@@ -199,7 +204,7 @@ code_change(_OldVsn, State, _Extra) ->
 %%--------------------------------------------------------------------
 
 internal_kill(Pid) ->
-	io:format("Killing process ~p now~n", [Pid]),
+	gen_event:notify(sm_msg_man, {"Killing process ~p now", [Pid]}),
 	exit(Pid, terminated).
 
 %% END
