@@ -27,6 +27,10 @@ start() ->
 	%% Display them
 	io:format("Processes: ~p~n", [sm_engine:p()]),
 
+	%% kill all processes
+	sm_engine:reset(),
+	io:format("Processes after reset: ~p~n", [sm_engine:p()]),
+
 	%% Saying good bye
 	sm_engine:stop(),
 	io:format("END~n").
