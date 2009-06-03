@@ -34,7 +34,7 @@ compile: ${MODS:%=%.beam}
 #	${ERL} -pa Dir1  -s application1 start Arg1 Arg2 
 
 tester: compile
-	${ERL} -pa . -s tester start
+	${ERL} -pa . -noshell -s tester start -s init stop
 
 # the subdirs target compiles any code in 
 # sub-directories
