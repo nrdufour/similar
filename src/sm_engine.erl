@@ -99,7 +99,7 @@ new_P(Mod, Func, Args) ->
 %%--------------------------------------------------------------------
 init([]) ->
 	process_flag(trap_exit, true),
-	gen_event:notify(sm_msg_man, {"~p starting" ,[?MODULE]}),
+	log("~p starting" ,[?MODULE]),
 	{ok, #sm_data{}}.
 
 %%--------------------------------------------------------------------
@@ -113,9 +113,9 @@ init([]) ->
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
 handle_call({new_P, Mod, Func, Args}, _From, State) ->
-	gen_event:notify(sm_msg_man, {"Creating new Process from module ~p", [Mod]}),
+	log("Creating new Process from module ~p", [Mod]),
 	Pid = spawn_link(Mod, Func, Args),
-	gen_event:notify(sm_msg_man, {"Adding new process ~p", [Pid]}),
+	log("Adding new process ~p", [Pid]),
 
 	NewProcesses = [Pid|State#sm_data.processes],
 	NewState = State#sm_data{processes = NewProcesses},
@@ -178,7 +178,7 @@ handle_cast(stop, State) ->
 %% Description: Handling all non call/cast messages
 %%--------------------------------------------------------------------
 handle_info({'EXIT', Pid, Reason}, State) ->
-	gen_event:notify(sm_msg_man, {"Received an exit signal from ~p with the reason: ~p", [Pid, Reason]}),
+	log("Received an exit signal from ~p with the reason: ~p", [Pid, Reason]),
 	{noreply, State}.
 
 %%--------------------------------------------------------------------
@@ -189,7 +189,7 @@ handle_info({'EXIT', Pid, Reason}, State) ->
 %% The return value is ignored.
 %%--------------------------------------------------------------------
 terminate(normal, _State) ->
-	gen_event:notify(sm_msg_man, {"~p stopping" ,[?MODULE]}),
+	log("~p stopping" ,[?MODULE]),
 	ok.
 
 %%--------------------------------------------------------------------
@@ -204,8 +204,11 @@ code_change(_OldVsn, State, _Extra) ->
 %%--------------------------------------------------------------------
 
 internal_kill(Pid) ->
-	gen_event:notify(sm_msg_man, {"Killing process ~p now", [Pid]}),
+	log("Killing process ~p now", [Pid]),
 	exit(Pid, terminated).
+
+log(Msg, Args) ->
+	gen_event:notify(sm_msg_man, {Msg, Args}).
 
 %% END
 	
