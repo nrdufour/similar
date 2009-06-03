@@ -207,8 +207,11 @@ internal_kill(Pid) ->
 	log("Killing process ~p now", [Pid]),
 	exit(Pid, terminated).
 
-log(Msg, Args) ->
-	gen_event:notify(sm_msg_man, {Msg, Args}).
+log(Format, Args) ->
+	SF1 = string:concat("\t", Format),
+	SF2 = string:concat(SF1, "\n"),
+	Msg = io_lib:format(SF2, Args),
+	gen_event:notify(sm_msg_man, Msg).
 
 %% END
 	

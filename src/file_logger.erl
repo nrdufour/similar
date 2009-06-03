@@ -23,11 +23,10 @@ init(File) ->
 handle_event({trace, Trace}, {_Trace, Fd}) ->
 	{ok, {Trace, Fd}};
 
-handle_event({Msg, Args}, {Trace, Fd}) ->
+handle_event(Msg, {Trace, Fd}) ->
 	if
 		Trace ->
-			Format = string:concat(Msg, "~n"),
-			io:format(Fd, Format, Args);
+			io:format(Fd, Msg);
 		true ->
 			true
 	end,

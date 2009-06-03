@@ -24,11 +24,10 @@ handle_event({trace, Trace}, _State) ->
 	{ok, Trace};
 
 %% display a simple message
-handle_event({Msg, Args}, State) ->
+handle_event(Msg, State) ->
 	if
 		State ->
-			Format = string:concat(Msg, "~n"),
-			io:format(Format, Args);
+			io:format(Msg);
 		true ->
 			true
 	end,
