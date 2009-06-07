@@ -158,9 +158,7 @@ handle_call(reset, _From, State) ->
 
 handle_call({kill, Pid}, _From, State) ->
 	exit(Pid, terminated),
-	NewProcesses = lists:delete(Pid, State#sm_data.processes),
-	NewState = State#sm_data{processes = NewProcesses},
-	{reply, ok, NewState}.
+	{reply, ok, State}.
 
 %%--------------------------------------------------------------------
 %% Function: handle_cast(Msg, State) -> {noreply, State} |
@@ -178,8 +176,17 @@ handle_cast(stop, State) ->
 %% Description: Handling all non call/cast messages
 %%--------------------------------------------------------------------
 handle_info({'EXIT', Pid, Reason}, State) ->
-	log("Received an exit signal from ~p with the reason: ~p", [Pid, Reason]),
-	{noreply, State}.
+	log("~p is dead. Reason:\t~p", [Pid, Reason]),
+	Processes = State#sm_data.processes,
+	IsAProcess = lists:member(Pid, Processes),
+	if
+		IsAProcess ->
+			NewProcesses = lists:delete(Pid, Processes),
+			NewState = State#sm_data{processes = NewProcesses},
+			{noreply, NewState};
+		true ->
+			{noreply, State}
+	end.
 
 %%--------------------------------------------------------------------
 %% Function: terminate(Reason, State) -> void()
