@@ -74,6 +74,9 @@ c() ->
 
 %%====================================================================
 
+event_time() ->
+	gen_server:call(?MODULE, event_time).
+
 trace() ->
 	gen_server:call(?MODULE, {trace, on}).
 
@@ -112,6 +115,9 @@ init([]) ->
 %% {stop, Reason, State}
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
+handle_call(event_time, _From, State) ->
+	{reply, State#sm_data.time, State};
+
 handle_call({new_P, Mod, Func, Args}, _From, State) ->
 	log("Creating new Process from module ~p", [Mod]),
 	Pid = spawn_link(Mod, Func, Args),
