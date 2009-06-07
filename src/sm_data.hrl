@@ -20,7 +20,7 @@
 	resources = [],
 	processes = [],
 	actives = [],
-	time,
+	time = 0,
 	props = [],
 	trace = false
 	
