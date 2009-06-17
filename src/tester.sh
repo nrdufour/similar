@@ -1,2 +1,2 @@
 #!/bin/sh
-erl -noshell -pa . -s tester start -s init stop
+erl -boot start_clean -noshell -pa . -s tester start -s init stop
