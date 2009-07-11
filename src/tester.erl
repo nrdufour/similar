@@ -20,9 +20,9 @@ start() ->
 	similar:start_link(),
 
 	%% Add a few processes
-	similar:new_P(foo, loop,[]),
-	similar:new_P(foo, loop,[]),
-	similar:new_P(foo, loop,[]),
+	similar:new_P(dummy_process, loop,[]),
+	similar:new_P(dummy_process, loop,[]),
+	similar:new_P(dummy_process, loop,[]),
 
 	%% Display them
 	io:format("Processes: ~p~n", [similar:p()]),

@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% File : foo.erl
+%%% File : dummy_process.erl
 %%% Author : Nicolas R Dufour <nrdufour@gmail.com>
 %%% Created : 2009/05/22
 %%% Description :
@@ -11,15 +11,15 @@
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
 
--module(foo).
+-module(dummy_process).
 -compile(export_all).
 
 loop() ->
 	receive
 		die ->
 			true;
-		blah ->
-			io:format("Blah from foo~n"),
+		hello ->
+			io:format("Hello there~n"),
 			loop()
 	end.
 
