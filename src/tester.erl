@@ -17,20 +17,20 @@
 
 start() ->
 	%% Start the engine
-	sm_engine:start_link(),
+	similar_server:start_link(),
 
 	%% Add a few processes
-	sm_engine:new_P(foo, loop,[]),
-	sm_engine:new_P(foo, loop,[]),
-	sm_engine:new_P(foo, loop,[]),
+	similar_server:new_P(foo, loop,[]),
+	similar_server:new_P(foo, loop,[]),
+	similar_server:new_P(foo, loop,[]),
 
 	%% Display them
-	io:format("Processes: ~p~n", [sm_engine:p()]),
+	io:format("Processes: ~p~n", [similar_server:p()]),
 
 	%% kill all processes
-	sm_engine:reset(),
-	io:format("Processes after reset: ~p~n", [sm_engine:p()]),
+	similar_server:reset(),
+	io:format("Processes after reset: ~p~n", [similar_server:p()]),
 
 	%% Saying good bye
-	sm_engine:stop(),
+	similar_server:stop(),
 	io:format("END~n").
