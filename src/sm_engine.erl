@@ -22,7 +22,7 @@
         terminate/2, code_change/3]).
 -compile(export_all).
 
--include("sm_data.hrl").
+-include("similar_data.hrl").
 
 
 %%====================================================================
