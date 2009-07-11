@@ -17,20 +17,20 @@
 
 start() ->
 	%% Start the engine
-	similar_server:start_link(),
+	similar:start_link(),
 
 	%% Add a few processes
-	similar_server:new_P(foo, loop,[]),
-	similar_server:new_P(foo, loop,[]),
-	similar_server:new_P(foo, loop,[]),
+	similar:new_P(foo, loop,[]),
+	similar:new_P(foo, loop,[]),
+	similar:new_P(foo, loop,[]),
 
 	%% Display them
-	io:format("Processes: ~p~n", [similar_server:p()]),
+	io:format("Processes: ~p~n", [similar:p()]),
 
 	%% kill all processes
-	similar_server:reset(),
-	io:format("Processes after reset: ~p~n", [similar_server:p()]),
+	similar:reset(),
+	io:format("Processes after reset: ~p~n", [similar:p()]),
 
 	%% Saying good bye
-	similar_server:stop(),
+	similar:stop(),
 	io:format("END~n").
