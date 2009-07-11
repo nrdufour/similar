@@ -32,10 +32,8 @@
 %% {stop, Reason}
 %% Description: Initiates the server
 %%--------------------------------------------------------------------
-init([]) ->
-	process_flag(trap_exit, true),
-	log("~p starting" ,[?MODULE]),
-	{ok, #sm_data{}}.
+init(Args) ->
+	similar_server_impl:initialize_server(Args).
 
 %%--------------------------------------------------------------------
 %% Function:
@@ -47,25 +45,17 @@ init([]) ->
 %% {stop, Reason, State}
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
-handle_call(event_time, _From, State) ->
-	{reply, State#sm_data.time, State};
+handle_call(event_time, From, State) ->
+	similar_server_impl:event_time(From, State);
 
-handle_call({new_P, Mod, Func, Args}, _From, State) ->
-	log("Creating new Process from module ~p", [Mod]),
-	Pid = spawn_link(Mod, Func, Args),
-	log("Adding new process ~p", [Pid]),
+handle_call({new_P, Mod, Func, Args}, From, State) ->
+	similar_server_impl:new_P({Mod, Func, Args}, From, State);
 
-	NewProcesses = [Pid|State#sm_data.processes],
-	NewState = State#sm_data{processes = NewProcesses},
-	{reply, Pid, NewState};
+handle_call({trace, on}, From, State) ->
+	similar_server_impl:trace_on(From, State);
 
-handle_call({trace, on}, _From, State) ->
-	NewState = State#sm_data{trace = true},
-	{reply, ok, NewState};
-
-handle_call({trace, off}, _From, State) ->
-	NewState = State#sm_data{trace = false},
-	{reply, ok, NewState};
+handle_call({trace, off}, From, State) ->
+	similar_server_impl:trace_off(From, State);
 
 handle_call({debug, r}, _From, State) ->
 	sm_debug:r(State);
@@ -85,18 +75,14 @@ handle_call({debug, c}, _From, State) ->
 handle_call(stop, _From, State) ->
 	{stop, normal, State};
 
-handle_call(kill_current, _From, State) ->
-	{reply, ok, State};
+handle_call(kill_current, From, State) ->
+	similar_server_impl:kill_current(From, State);
 
-handle_call(reset, _From, State) ->
-	lists:foreach(fun internal_kill/1, State#sm_data.processes),
-	lists:foreach(fun internal_kill/1, State#sm_data.resources),
-	NewState = State#sm_data{events = [], resources = [], processes = [], actives = []},
-	{reply, ok, NewState};
+handle_call(reset, From, State) ->
+	similar_server_impl:reset(From, State);
 
-handle_call({kill, Pid}, _From, State) ->
-	exit(Pid, terminated),
-	{reply, ok, State}.
+handle_call({kill, Pid}, From, State) ->
+	similar_server_impl:kill_simulation_process(Pid, From, State).
 
 %%--------------------------------------------------------------------
 %% Function: handle_cast(Msg, State) -> {noreply, State} |
@@ -114,17 +100,7 @@ handle_cast(stop, State) ->
 %% Description: Handling all non call/cast messages
 %%--------------------------------------------------------------------
 handle_info({'EXIT', Pid, Reason}, State) ->
-	log("~p is dead. Reason:\t~p", [Pid, Reason]),
-	Processes = State#sm_data.processes,
-	IsAProcess = lists:member(Pid, Processes),
-	if
-		IsAProcess ->
-			NewProcesses = lists:delete(Pid, Processes),
-			NewState = State#sm_data{processes = NewProcesses},
-			{noreply, NewState};
-		true ->
-			{noreply, State}
-	end.
+	similar_server_impl:receiving_exit_from_P(Pid, Reason, State).
 
 %%--------------------------------------------------------------------
 %% Function: terminate(Reason, State) -> void()
@@ -134,7 +110,6 @@ handle_info({'EXIT', Pid, Reason}, State) ->
 %% The return value is ignored.
 %%--------------------------------------------------------------------
 terminate(normal, _State) ->
-	log("~p stopping" ,[?MODULE]),
 	ok.
 
 %%--------------------------------------------------------------------
@@ -143,20 +118,6 @@ terminate(normal, _State) ->
 %%--------------------------------------------------------------------
 code_change(_OldVsn, State, _Extra) ->
 	{ok, State}.
-
-%%--------------------------------------------------------------------
-%%% Internal functions
-%%--------------------------------------------------------------------
-
-internal_kill(Pid) ->
-	log("Killing process ~p now", [Pid]),
-	exit(Pid, terminated).
-
-log(Format, Args) ->
-	SF1 = string:concat("\t", Format),
-	SF2 = string:concat(SF1, "\n"),
-	Msg = io_lib:format(SF2, Args),
-	gen_event:notify(sm_msg_man, Msg).
 
 %% END
 	
