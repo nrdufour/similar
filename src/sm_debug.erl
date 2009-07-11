@@ -15,7 +15,7 @@
 
 -export([r/1,p/1,e/1,s/1,c/1]).
 
--include("sm_data.hrl").
+-include("similar_data.hrl").
 
 r(State) ->
 	{reply, State#sm_data.resources, State}.

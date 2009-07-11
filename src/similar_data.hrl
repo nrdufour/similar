@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% File : sm_data.hrl
+%%% File : similar_data.hrl
 %%% Author : Nicolas R Dufour <nrdufour@gmail.com>
 %%% Created : 2009/05/19
 %%% Description :
