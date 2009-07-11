@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% File : sm_engine.erl
+%%% File : similar_server.erl
 %%% Author : Nicolas Dufour <nrdufour@gmail.com>
 %%% Created : 2009/05/19
 %%% Description :
@@ -11,7 +11,7 @@
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
 
--module(sm_engine).
+-module(similar_server).
 -behaviour(gen_server).
 
 %% API
