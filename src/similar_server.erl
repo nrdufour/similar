@@ -58,19 +58,19 @@ handle_call({trace, off}, From, State) ->
 	similar_server_impl:trace_off(From, State);
 
 handle_call({debug, r}, _From, State) ->
-	sm_debug:r(State);
+	similar_server_impl:r(State);
 
 handle_call({debug, p}, _From, State) ->
-	sm_debug:p(State);
+	similar_server_impl:p(State);
 
 handle_call({debug, e}, _From, State) ->
-	sm_debug:e(State);
+	similar_server_impl:e(State);
 
 handle_call({debug, s}, _From, State) ->
-	sm_debug:s(State);
+	similar_server_impl:s(State);
 
 handle_call({debug, c}, _From, State) ->
-	sm_debug:c(State);
+	similar_server_impl:c(State);
 
 handle_call(stop, _From, State) ->
 	{stop, normal, State};
