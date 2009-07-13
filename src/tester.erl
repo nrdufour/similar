@@ -17,7 +17,7 @@
 
 start() ->
 	%% Start the engine
-	similar:start_link(),
+	similar:start(),
 
 	%% Add a few processes
 	similar:new_P(dummy_process, loop,[]),
