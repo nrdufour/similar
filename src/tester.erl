@@ -20,16 +20,9 @@ start() ->
 	similar:start(),
 
 	%% Add a few processes
-	similar:new_P(dummy_process, loop,[]),
-	similar:new_P(dummy_process, loop,[]),
-	similar:new_P(dummy_process, loop,[]),
-
-	%% Display them
-	io:format("Processes: ~p~n", [similar:p()]),
-
-	%% kill all processes
-	similar:reset(),
-	io:format("Processes after reset: ~p~n", [similar:p()]),
+	similar:new_P(simple, start,[]),
+	similar:new_P(simple, start,[]),
+	similar:new_P(simple, start,[]),
 
 	%% Saying good bye
 	similar:stop(),
