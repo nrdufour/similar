@@ -16,12 +16,19 @@
 
 	%%% {EvTree; R;E;Current; RealTime; SList; Trace}
 
+	%% Events to be scheduled
 	events = [],
+	%% Resources list
 	resources = [],
+	%% Alive processes in the simulation
 	processes = [],
+	%% Active processes in the simulation
 	actives = [],
+	%% Simulation time
 	time = 0,
+	%% Properties
 	props = [],
+	%% Activate the traces or not
 	trace = false
 	
 	}
