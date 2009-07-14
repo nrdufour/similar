@@ -7,12 +7,10 @@
 .yrl.erl:
 	erlc -W $<
 
-ERL = erl -boot start_clean 
-
 # Here's a list of the erlang modules you want compiling
 # If the modules don't fit onto one line add a \ character 
 # to the end of the line and continue on the next line
-MODS = utils tester
+MODS = similar_server_impl similar_server similar
 
 # The first target in any makefile is the default target.
 # If you just type "make" then "make all" is assumed (because
@@ -20,24 +18,9 @@ MODS = utils tester
 
 all: compile
 
-compile: ${MODS:%=%.beam} subdirs
+compile: ${MODS:%=%.beam}
 	
-tester: compile
-	${ERL} -pa . ./loggers ./process ./engine -noshell -s tester start -s init stop
-
-# the subdirs target compiles any code in 
-# sub-directories
-
-subdirs:
-	cd loggers; make
-	cd process; make
-	cd engine; make
-
 # remove all the code
 
 clean:	
 	rm -rf *.beam erl_crash.dump
-	cd loggers; make clean
-	cd process; make clean
-	cd engine; make clean
-
