@@ -20,7 +20,7 @@ internal_kill(Pid) ->
 	exit(Pid, terminated).
 
 log(Format, Args) ->
-	SF1 = string:concat("\t", Format),
+	SF1 = string:concat("[@] -- ", Format),
 	SF2 = string:concat(SF1, "\n"),
 	Msg = io_lib:format(SF2, Args),
 	gen_event:notify(sm_msg_man, Msg).
