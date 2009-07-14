@@ -60,7 +60,7 @@ reset() ->
 %% Description: Kills the process/resource managed by the server.
 %%--------------------------------------------------------------------
 kill_pid(Pid) ->
-	gen_server:call(?SERVER, {kill, Pid}). 
+	gen_server:call(?SERVER, {kill_pid, Pid}). 
 
 %%====================================================================
 
