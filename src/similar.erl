@@ -36,6 +36,7 @@ start() ->
 %% Description: Stops the server (kills all processes/resources).
 %%--------------------------------------------------------------------
 stop() ->
+	reset(),
 	gen_server:cast(?SERVER, stop),
 	gen_event:stop(sm_msg_man).
 
