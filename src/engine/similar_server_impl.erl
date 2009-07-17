@@ -56,7 +56,7 @@ receiving_exit_from_P(Pid, _Reason, State) ->
 	IsAProcess = lists:member(Pid, Processes),
 	if
 		IsAProcess ->
-			utils:log("Process ~p is dead!~n", [Pid]),
+			loggers:log("Process ~p is dead!~n", [Pid]),
 			NewProcesses = lists:delete(Pid, Processes),
 			NewState = State#sm_data{processes = NewProcesses},
 			{noreply, NewState};
