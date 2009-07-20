@@ -15,20 +15,16 @@
 -compile(export_all).
 
 log(Format, Args) ->
-
-	%% Message to store
 	Msg = io_lib:format(Format, Args),
-	
-	%% Header
 	{_Date, Time} = calendar:local_time(),
-	Header = io_lib:format("[~p] -- ", [Time]),
-
-	%% Footer
-	Footer = "\n",
-
-	Final = string:concat(string:concat(Header, Msg), Footer),
-
+	FormattedTime = format_time(Time),
+	Final = io_lib:format("[~s] -- ~s ~n", [FormattedTime, Msg]),
         gen_event:notify(sm_msg_man, Final).
+
+format_time({Hour, Minute, Second}) ->
+	io_lib:format("~2..0w:~2..0w:~2..0w", [Hour, Minute, Second]).
+
+
 
 
 %% END
