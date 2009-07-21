@@ -15,6 +15,16 @@
 -compile(export_all).
 
 start() ->
-	io:format("Hello I'm ~p and going to die soon!~n", [self()]).
+	loop().
+
+loop() ->
+	receive
+		start ->
+			io:format("Hello I'm ~p and going to die soon!~n", [self()]),
+			loop();
+		Other ->
+			io:format("Received an unknown message [~p]~n", [Other]),
+			loop()
+	end.
 
 %%% end
