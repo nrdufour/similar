@@ -48,7 +48,7 @@ terminate_event(EventStore, Timestamp) ->
 
 get_first_event(EventStore) ->
 	[First|_Tail] = lists:sort(dict:fetch_keys(EventStore)),
-	First.
+	dict:fetch(First, EventStore).
 
 get_event(EventStore, Timestamp) ->
 	HasTimestamp = dict:is_key(Timestamp, EventStore),
