@@ -34,4 +34,13 @@
 	}
 ).
 
+-record(sm_event,
+	{
+		%% Event timestamp
+		time = 0,
+		%% Processes to wake up at that timestamp
+		procs = []
+	}
+).
+
 %%%
