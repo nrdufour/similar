@@ -1,0 +1,8 @@
+TODO LIST
+---------
+
+Milestone 1
+* find a good data structure to carry the event list.
+* make sure the creation of a process is consistent for the event list.
+* make sure the destruction of a process is also consistent
+
