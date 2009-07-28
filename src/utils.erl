@@ -13,7 +13,7 @@
 
 -module(utils).
 
--compile(export_all).
+-export([kill_erlang_process/1]).
 
 kill_erlang_process(Pid) ->
 	loggers:log("Killing process ~p now", [Pid]),

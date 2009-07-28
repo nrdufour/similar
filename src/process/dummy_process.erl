@@ -12,7 +12,8 @@
 %%%-------------------------------------------------------------------
 
 -module(dummy_process).
--compile(export_all).
+
+-export([loop/0]).
 
 loop() ->
 	receive
