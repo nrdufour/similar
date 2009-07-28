@@ -15,7 +15,7 @@
 
 -compile(export_all).
 
-internal_kill(Pid) ->
+kill_erlang_process(Pid) ->
 	loggers:log("Killing process ~p now", [Pid]),
 	exit(Pid, terminated).
 
