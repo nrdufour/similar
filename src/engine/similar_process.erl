@@ -13,7 +13,7 @@
 
 -module(similar_process).
 
--export([new_P/3]).
+-export([new_P/3, process_terminate/2]).
 
 -include("similar_data.hrl").
 
@@ -35,6 +35,21 @@ new_P({Mod, Func, Args}, _From, State) ->
 
 	% Prepare the new state
 	NewState = State#sm_data{processes = NewProcesses, events = NewEvents, actives = NewActives},
+
+	{reply, Pid, NewState}.
+
+%% Clean the simulation state knowing that the given process is dead
+process_terminate(Pid, State) ->
+	% Remove it from the process list
+	NewProcesses = lists:delete(State#sm_data.processes),
+
+	% Remove it from the active list (if present)
+	NewActives = lists:delete(State#sm_data.actives),
+
+	% Remove it from the event list (if present)
+	NewEvents = State#sm_data.events,
+
+	NewState = State#sm_data{processes = NewProcesses, actives = NewActives, events = NewEvents},
 
 	{reply, Pid, NewState}.
 

@@ -1,43 +1,15 @@
-# leave these lines alone
-.SUFFIXES: .erl .beam .yrl
+include ../support/include.mk
 
-.erl.beam:
-	erlc -W $<
+all: $(EBIN_FILES)
+	(cd loggers;$(MAKE))
+	(cd process;$(MAKE))
+	(cd engine;$(MAKE))
 
-.yrl.erl:
-	erlc -W $<
+debug:
+	$(MAKE) DEBUG=-DDEBUG
 
-ERL = erl -boot start_clean 
-
-# Here's a list of the erlang modules you want compiling
-# If the modules don't fit onto one line add a \ character 
-# to the end of the line and continue on the next line
-MODS = utils tester
-
-# The first target in any makefile is the default target.
-# If you just type "make" then "make all" is assumed (because
-#   "all" is the first target in this makefile)
-
-all: compile
-
-compile: ${MODS:%=%.beam} subdirs
-	
-tester: compile
-	${ERL} -pa . ./loggers ./process ./engine -noshell -s tester start -s init stop
-
-# the subdirs target compiles any code in 
-# sub-directories
-
-subdirs:
-	cd loggers; make
-	cd process; make
-	cd engine; make
-
-# remove all the code
-
-clean:	
-	rm -rf *.beam erl_crash.dump
-	cd loggers; make clean
-	cd process; make clean
-	cd engine; make clean
-
+clean:
+	rm -rf $(EBIN_FILES)
+	(cd loggers;$(MAKE) clean)
+	(cd process;$(MAKE) clean)
+	(cd engine;$(MAKE) clean)

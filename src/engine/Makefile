@@ -1,26 +1,9 @@
-# leave these lines alone
-.SUFFIXES: .erl .beam .yrl
+include ../../support/include.mk
 
-.erl.beam:
-	erlc -W $<
+all: $(EBIN_FILES)
 
-.yrl.erl:
-	erlc -W $<
+debug:
+	$(MAKE) DEBUG=-DDEBUG
 
-# Here's a list of the erlang modules you want compiling
-# If the modules don't fit onto one line add a \ character 
-# to the end of the line and continue on the next line
-MODS = similar_server_impl similar_server similar_process similar events
-
-# The first target in any makefile is the default target.
-# If you just type "make" then "make all" is assumed (because
-#   "all" is the first target in this makefile)
-
-all: compile
-
-compile: ${MODS:%=%.beam}
-	
-# remove all the code
-
-clean:	
-	rm -rf *.beam erl_crash.dump
+clean:
+	rm -rf $(EBIN_FILES)
