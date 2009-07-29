@@ -24,13 +24,6 @@ initialize_server(_Args) ->
 event_time(_From, State) ->
 	{reply, State#sm_data.time, State}.
 
-new_P({Mod, Func, Args}, _From, State) ->
-	Pid = spawn_link(Mod, Func, Args),
-
-	NewProcesses = [Pid|State#sm_data.processes],
-	NewState = State#sm_data{processes = NewProcesses},
-	{reply, Pid, NewState}.
-
 trace_on(_From, State) ->
 	NewState = State#sm_data{trace = true},
 	{reply, ok, NewState}.

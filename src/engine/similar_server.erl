@@ -49,7 +49,7 @@ handle_call(event_time, From, State) ->
 	similar_server_impl:event_time(From, State);
 
 handle_call({new_P, Mod, Func, Args}, From, State) ->
-	similar_server_impl:new_P({Mod, Func, Args}, From, State);
+	similar_process:new_P({Mod, Func, Args}, From, State);
 
 handle_call({trace, on}, From, State) ->
 	similar_server_impl:trace_on(From, State);
