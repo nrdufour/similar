@@ -58,19 +58,19 @@ handle_call({trace, off}, From, State) ->
 	similar_server_impl:trace_off(From, State);
 
 handle_call({debug, r}, _From, State) ->
-	similar_server_impl:r(State);
+	similar_query:r(State);
 
 handle_call({debug, p}, _From, State) ->
-	similar_server_impl:p(State);
+	similar_query:p(State);
 
 handle_call({debug, e}, _From, State) ->
-	similar_server_impl:e(State);
+	similar_query:e(State);
 
 handle_call({debug, s}, _From, State) ->
-	similar_server_impl:s(State);
+	similar_query:s(State);
 
 handle_call({debug, c}, _From, State) ->
-	similar_server_impl:c(State);
+	similar_query:c(State);
 
 handle_call(stop, _From, State) ->
 	{stop, normal, State};
@@ -100,7 +100,7 @@ handle_cast(stop, State) ->
 %% Description: Handling all non call/cast messages
 %%--------------------------------------------------------------------
 handle_info({'EXIT', Pid, Reason}, State) ->
-	similar_server_impl:receiving_exit_from_P(Pid, Reason, State).
+	similar_server_impl:processing_exit_signal(Pid, Reason, State).
 
 %%--------------------------------------------------------------------
 %% Function: terminate(Reason, State) -> void()

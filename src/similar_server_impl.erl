@@ -45,33 +45,15 @@ kill_pid(Pid, _From, State) ->
 	exit(Pid, terminated),
 	{reply, ok, State}.
 
-receiving_exit_from_P(Pid, _Reason, State) ->
+processing_exit_signal(Pid, _Reason, State) ->
 	Processes = State#sm_data.processes,
 	IsAProcess = lists:member(Pid, Processes),
 	if
 		IsAProcess ->
-			loggers:log("Process ~p is dead!~n", [Pid]),
-			NewProcesses = lists:delete(Pid, Processes),
-			NewState = State#sm_data{processes = NewProcesses},
-			{noreply, NewState};
+			similar_process:process_terminate(Pid, State);
 		true ->
 			{noreply, State}
 	end.
-
-r(State) ->
-	{reply, State#sm_data.resources, State}.
-
-p(State) ->
-	{reply, State#sm_data.processes, State}.
-
-e(State) ->
-	{reply, State#sm_data.events, State}.
-
-s(State) ->
-	{reply, State#sm_data.props, State}.
-
-c(State) ->
-	{reply, State#sm_data.actives, State}.
 
 %% END
 	
