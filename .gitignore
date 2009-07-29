@@ -1,0 +1,4 @@
+doc/
+ebin/
+*.swp
+*.dump

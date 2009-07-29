@@ -1,4 +1,0 @@
-# Ignoring *.beam files
-*.beam
-# Ignoring *.swp files from vim
-*.swp
