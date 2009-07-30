@@ -16,11 +16,6 @@
 
 -include("similar_data.hrl").
 
-initialize_server(_Args) ->
-	process_flag(trap_exit, true),
-	InitializedStructure = #sm_data{ events = events:create_event_store() },
-	{ok, InitializedStructure}.
-
 event_time(_From, State) ->
 	{reply, State#sm_data.time, State}.
 

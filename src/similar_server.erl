@@ -33,7 +33,9 @@
 %% Description: Initiates the server
 %%--------------------------------------------------------------------
 init(Args) ->
-	similar_server_impl:initialize_server(Args).
+	process_flag(trap_exit, true),
+	InitialState = #sm_data{ events = events:create_event_store() },
+	{ok, InitialState}.
 
 %%--------------------------------------------------------------------
 %% Function:
