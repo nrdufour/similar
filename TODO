@@ -1,8 +1,5 @@
 TODO LIST
 ---------
 
-Milestone 1
-* find a good data structure to carry the event list.
-* make sure the creation of a process is consistent for the event list.
-* make sure the destruction of a process is also consistent
-
+* add hold method and change the state the proper way
+* study a way to continue from here to have the loop back
