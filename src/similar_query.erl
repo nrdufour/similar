@@ -12,7 +12,8 @@
 %%%-------------------------------------------------------------------
 
 -module(similar_query).
--compile(export_all).
+
+-export([r/1, p/1, e/1, s/1, c/1, event_time/1]).
 
 -include("similar_data.hrl").
 
