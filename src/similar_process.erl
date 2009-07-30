@@ -13,7 +13,7 @@
 
 -module(similar_process).
 
--export([kill_sim_proc/1, new_P/3, process_terminate/2]).
+-export([kill_sim_proc/1, new_P/2, process_terminate/2]).
 
 -include("similar_data.hrl").
 
@@ -23,7 +23,7 @@ kill_sim_proc(Pid) ->
 	exit(Pid, {process, terminated}).
 
 %% Create a new simulation process at the current time (active)
-new_P({Mod, Func, Args}, _From, State) ->
+new_P({Mod, Func, Args}, State) ->
 	% Create the process first
 	Pid = spawn_link(Mod, Func, Args),
 
@@ -38,10 +38,7 @@ new_P({Mod, Func, Args}, _From, State) ->
 	% Add it in the active
 	NewActives = [Pid|State#sm_data.actives],	
 
-	% Prepare the new state
-	NewState = State#sm_data{processes = NewProcesses, events = NewEvents, actives = NewActives},
-
-	{reply, Pid, NewState}.
+	State#sm_data{processes = NewProcesses, events = NewEvents, actives = NewActives}.
 
 %% Clean the simulation state knowing that the given process is dead
 process_terminate(Pid, State) ->

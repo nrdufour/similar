@@ -50,8 +50,8 @@ init(_Args) ->
 handle_call(event_time, _From, State) ->
 	{reply, similar_process:event_time(State), State};
 
-handle_call({new_P, Mod, Func, Args}, From, State) ->
-	similar_process:new_P({Mod, Func, Args}, From, State);
+handle_call({new_P, Mod, Func, Args}, _From, State) ->
+	{reply, ok, similar_process:new_P({Mod, Func, Args}, State)};
 
 handle_call({trace, on}, From, State) ->
 	similar_server_impl:trace_on(From, State);
