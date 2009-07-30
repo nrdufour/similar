@@ -17,19 +17,19 @@
 -include("similar_data.hrl").
 
 r(State) ->
-	{reply, State#sm_data.resources, State}.
+	State#sm_data.resources.
 
 p(State) ->
-	{reply, State#sm_data.processes, State}.
+	State#sm_data.processes.
 
 e(State) ->
-	{reply, State#sm_data.events, State}.
+	State#sm_data.events.
 
 s(State) ->
-	{reply, State#sm_data.props, State}.
+	State#sm_data.props.
 
 c(State) ->
-	{reply, State#sm_data.actives, State}.
+	State#sm_data.actives.
 
 %% END
 	

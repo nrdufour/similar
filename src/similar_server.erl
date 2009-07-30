@@ -32,7 +32,7 @@
 %% {stop, Reason}
 %% Description: Initiates the server
 %%--------------------------------------------------------------------
-init(Args) ->
+init(_Args) ->
 	process_flag(trap_exit, true),
 	InitialState = #sm_data{ events = events:create_event_store() },
 	{ok, InitialState}.
@@ -60,19 +60,19 @@ handle_call({trace, off}, From, State) ->
 	similar_server_impl:trace_off(From, State);
 
 handle_call({debug, r}, _From, State) ->
-	similar_query:r(State);
+	{reply, similar_query:r(State), State};
 
 handle_call({debug, p}, _From, State) ->
-	similar_query:p(State);
+	{reply, similar_query:p(State), State};
 
 handle_call({debug, e}, _From, State) ->
-	similar_query:e(State);
+	{reply, similar_query:e(State), State};
 
 handle_call({debug, s}, _From, State) ->
-	similar_query:s(State);
+	{reply, similar_query:s(State), State};
 
 handle_call({debug, c}, _From, State) ->
-	similar_query:c(State);
+	{reply, similar_query:c(State), State};
 
 handle_call(stop, _From, State) ->
 	{stop, normal, State};
