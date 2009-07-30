@@ -29,7 +29,7 @@ kill_current(State) ->
 reset(State) ->
 	lists:foreach(fun similar_process:kill_sim_proc/1, State#sm_data.processes),
 	lists:foreach(fun utils:kill_erlang_process/1, State#sm_data.resources),
-	State#sm_data{events = [], resources = [], processes = [], actives = []}.
+	State#sm_data{events = events:create_event_store(), resources = [], processes = [], actives = []}.
 
 %% END
 	
