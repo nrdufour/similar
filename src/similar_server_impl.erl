@@ -45,15 +45,5 @@ kill_pid(Pid, _From, State) ->
 	exit(Pid, terminated),
 	{reply, ok, State}.
 
-processing_exit_signal(Pid, _Reason, State) ->
-	Processes = State#sm_data.processes,
-	IsAProcess = lists:member(Pid, Processes),
-	if
-		IsAProcess ->
-			similar_process:process_terminate(Pid, State);
-		true ->
-			{noreply, State}
-	end.
-
 %% END
 	

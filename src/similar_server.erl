@@ -100,7 +100,14 @@ handle_cast(stop, State) ->
 %% Description: Handling all non call/cast messages
 %%--------------------------------------------------------------------
 handle_info({'EXIT', Pid, Reason}, State) ->
-	similar_server_impl:processing_exit_signal(Pid, Reason, State).
+	case Reason of
+		{process, _} ->
+			NewState = similar_process:process_terminate(Pid, State),
+			{noreply, NewState};
+		_ ->
+			io:format("Received an unknown EXIT signal from ~p with Reason ~p~n", [Pid, Reason]),
+			{noreply, State}
+	end.
 
 %%--------------------------------------------------------------------
 %% Function: terminate(Reason, State) -> void()
