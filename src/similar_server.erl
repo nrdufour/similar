@@ -47,8 +47,8 @@ init(_Args) ->
 %% {stop, Reason, State}
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
-handle_call(event_time, From, State) ->
-	similar_server_impl:event_time(From, State);
+handle_call(event_time, _From, State) ->
+	{reply, similar_process:event_time(State), State};
 
 handle_call({new_P, Mod, Func, Args}, From, State) ->
 	similar_process:new_P({Mod, Func, Args}, From, State);

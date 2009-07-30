@@ -31,5 +31,8 @@ s(State) ->
 c(State) ->
 	State#sm_data.actives.
 
+event_time(State) ->
+	State#sm_data.time.
+
 %% END
 	

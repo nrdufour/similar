@@ -16,9 +16,6 @@
 
 -include("similar_data.hrl").
 
-event_time(_From, State) ->
-	{reply, State#sm_data.time, State}.
-
 trace_on(_From, State) ->
 	NewState = State#sm_data{trace = true},
 	{reply, ok, NewState}.
