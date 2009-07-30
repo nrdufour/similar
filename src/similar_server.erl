@@ -53,11 +53,11 @@ handle_call(event_time, _From, State) ->
 handle_call({new_P, Mod, Func, Args}, _From, State) ->
 	{reply, ok, similar_process:new_P({Mod, Func, Args}, State)};
 
-handle_call({trace, on}, From, State) ->
-	similar_server_impl:trace_on(From, State);
+handle_call({trace, on}, _From, State) ->
+	{reply, ok, similar_utils:trace_on(State)};
 
-handle_call({trace, off}, From, State) ->
-	similar_server_impl:trace_off(From, State);
+handle_call({trace, off}, _From, State) ->
+	{reply, ok, similar_utils:trace_off(State)};
 
 handle_call({debug, r}, _From, State) ->
 	{reply, similar_query:r(State), State};
@@ -77,11 +77,11 @@ handle_call({debug, c}, _From, State) ->
 handle_call(stop, _From, State) ->
 	{stop, normal, State};
 
-handle_call(kill_current, From, State) ->
-	similar_server_impl:kill_current(From, State);
+handle_call(kill_current, _From, State) ->
+	{reply, not_yet_implemented, similar_utils:kill_current(State)};
 
-handle_call(reset, From, State) ->
-	similar_server_impl:reset(From, State);
+handle_call(reset, _From, State) ->
+	{reply, ok, similar_utils:reset(State)};
 
 handle_call({kill_pid, Pid}, _From, State) ->
 	similar_process:kill_sim_proc(Pid),

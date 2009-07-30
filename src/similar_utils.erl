@@ -1,9 +1,9 @@
 %%%-------------------------------------------------------------------
-%%% File : similar_server_impl.erl
+%%% File : similar_process.erl
 %%% Author : Nicolas Dufour <nrdufour@gmail.com>
-%%% Created : 2009/07/11
+%%% Created : 2009/07/29
 %%% Description :
-%%%	Main server implementation.
+%%%	Process related functions used by the main server
 %%%
 %%% Copyright 2009 Nicolas R Dufour <nrdufour@gmail.com>
 %%%
@@ -11,27 +11,25 @@
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
 
--module(similar_server_impl).
--compile(export_all).
+-module(similar_process).
+
+-export([trace_on/1, trace_off/1, kill_current/1, reset/1]).
 
 -include("similar_data.hrl").
 
-trace_on(_From, State) ->
-	NewState = State#sm_data{trace = true},
-	{reply, ok, NewState}.
+trace_on(State) ->
+	State#sm_data{trace = true}.
 
-trace_off(_From, State) ->
-	NewState = State#sm_data{trace = false},
-	{reply, ok, NewState}.
+trace_off(State) ->
+	State#sm_data{trace = false}.
 
-kill_current(_From, State) ->
-	{reply, ok, State}.
+kill_current(State) ->
+	State.
 
-reset(_From, State) ->
+reset(State) ->
 	lists:foreach(fun similar_process:kill_sim_proc/1, State#sm_data.processes),
 	lists:foreach(fun utils:kill_erlang_process/1, State#sm_data.resources),
-	NewState = State#sm_data{events = [], resources = [], processes = [], actives = []},
-	{reply, ok, NewState}.
+	State#sm_data{events = [], resources = [], processes = [], actives = []}.
 
 %% END
 	
