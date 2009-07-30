@@ -13,9 +13,14 @@
 
 -module(similar_process).
 
--export([new_P/3, process_terminate/2]).
+-export([kill_sim_proc/1, new_P/3, process_terminate/2]).
 
 -include("similar_data.hrl").
+
+%% Kill a simulation process
+kill_sim_proc(Pid) ->
+	loggers:log("Killing process ~p now", [Pid]),
+	exit(Pid, {process, terminated}).
 
 %% Create a new simulation process at the current time (active)
 new_P({Mod, Func, Args}, _From, State) ->
@@ -41,17 +46,15 @@ new_P({Mod, Func, Args}, _From, State) ->
 %% Clean the simulation state knowing that the given process is dead
 process_terminate(Pid, State) ->
 	% Remove it from the process list
-	NewProcesses = lists:delete(State#sm_data.processes),
+	NewProcesses = lists:delete(Pid, State#sm_data.processes),
 
 	% Remove it from the active list (if present)
-	NewActives = lists:delete(State#sm_data.actives),
+	NewActives = lists:delete(Pid, State#sm_data.actives),
 
 	% Remove it from the event list (if present)
 	NewEvents = State#sm_data.events,
 
-	NewState = State#sm_data{processes = NewProcesses, actives = NewActives, events = NewEvents},
-
-	{reply, Pid, NewState}.
+	State#sm_data{processes = NewProcesses, actives = NewActives, events = NewEvents}.
 
 %% END
 	
