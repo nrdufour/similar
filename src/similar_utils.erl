@@ -3,7 +3,7 @@
 %%% Author : Nicolas Dufour <nrdufour@gmail.com>
 %%% Created : 2009/07/29
 %%% Description :
-%%%	Process related functions used by the main server
+%%%	Utility functions related to the simulation engine.
 %%%
 %%% Copyright 2009 Nicolas R Dufour <nrdufour@gmail.com>
 %%%
@@ -11,7 +11,7 @@
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
 
--module(similar_process).
+-module(similar_utils).
 
 -export([trace_on/1, trace_off/1, kill_current/1, reset/1]).
 
