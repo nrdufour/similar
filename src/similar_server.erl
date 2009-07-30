@@ -83,8 +83,9 @@ handle_call(kill_current, From, State) ->
 handle_call(reset, From, State) ->
 	similar_server_impl:reset(From, State);
 
-handle_call({kill_pid, Pid}, From, State) ->
-	similar_server_impl:kill_pid(Pid, From, State).
+handle_call({kill_pid, Pid}, _From, State) ->
+	similar_process:kill_sim_proc(Pid),
+	{reply, ok, State}.
 
 %%--------------------------------------------------------------------
 %% Function: handle_cast(Msg, State) -> {noreply, State} |

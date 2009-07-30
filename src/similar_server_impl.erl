@@ -36,9 +36,5 @@ reset(_From, State) ->
 	NewState = State#sm_data{events = [], resources = [], processes = [], actives = []},
 	{reply, ok, NewState}.
 
-kill_pid(Pid, _From, State) ->
-	exit(Pid, terminated),
-	{reply, ok, State}.
-
 %% END
 	
