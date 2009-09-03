@@ -122,11 +122,22 @@ trace(false) -> gen_server:call(?SERVER, {trace, off}).
 %%====================================================================
 
 %%--------------------------------------------------------------------
-%% Function: new_P(Mod, Func, Args) -> {ok, Pid} |
+%% Function: new_P(Mod, Func, Args) -> {ok, Pid}
 %% Description: Initiates a new process based on the MFA arguments.
 %%--------------------------------------------------------------------
 new_P(Mod, Func, Args) ->
 	gen_server:call(?SERVER, {new_P, Mod, Func, Args}).
+
+%%--------------------------------------------------------------------
+%% Function: hold(Time) -> ok
+%% Description: Holds the calling process at the given time
+%%--------------------------------------------------------------------
+hold(Time) ->
+	gen_server:call(?SERVER, {hold, Time, self()}),
+	receive
+		startagain ->
+			true
+	end.
 
 %% END
 	
