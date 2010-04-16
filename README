@@ -1,3 +1,9 @@
-Similar is a discrete event simuliation engine written in Erlang based on the Simula process architecture.
+README FILE
+-----------
 
-Nicolas Dufour
+Similar is an erlang application providing a discrete event simulation engine.
+
+See http://www.embryo-systems.info/ for more details
+
+--Nicolas R Dufour <nrdufour@gmail.com>
+

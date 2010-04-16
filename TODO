@@ -1,5 +1,8 @@
-TODO LIST
+TODO List
 ---------
 
-* add hold method and change the state the proper way
-* study a way to continue from here to have the loop back
+ * a working set of active processes.
+ * add javascript for the process body (emonk or such).
+ * add hold method and change the state the proper way.
+ * study a way to continue from here to have the loop back.
+
