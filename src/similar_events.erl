@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% File : events.erl
+%%% File : similar_events.erl
 %%% Author : Nicolas Dufour <nrdufour@gmail.com>
 %%% Created : 2009/07/25
 %%% Description :
@@ -11,7 +11,7 @@
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
 
--module(events).
+-module(similar_events).
 
 -export([create_event/1, create_event/2, create_event_store/0, schedule_process/3, terminate_event/2, get_first_event/1, get_event/2]).
 

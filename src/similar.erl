@@ -28,16 +28,16 @@
 %%--------------------------------------------------------------------
 start() ->
 	gen_event:start({local, sm_msg_man}),
-	gen_event:add_handler(sm_msg_man, terminal_logger, []),
+	gen_event:add_handler(sm_msg_man, similar_terminal_logger, []),
 	gen_server:start_link({local, ?SERVER}, ?SERVER, [], []),
-	loggers:log("Similar Engine is starting!", []).
+	similar_utils:log("Similar Engine is starting!", []).
 
 %%--------------------------------------------------------------------
 %% Function: stop() -> ok
 %% Description: Stops the server (kills all processes/resources).
 %%--------------------------------------------------------------------
 stop() ->
-	loggers:log("Similar Engine is stopping!", []),
+	similar_utils:log("Similar Engine is stopping!", []),
 	reset(),
 	gen_server:cast(?SERVER, stop),
 	gen_event:stop(sm_msg_man).

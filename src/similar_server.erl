@@ -34,7 +34,7 @@
 %%--------------------------------------------------------------------
 init(_Args) ->
 	process_flag(trap_exit, true),
-	InitialState = #sm_data{ events = events:create_event_store() },
+	InitialState = #sm_data{ events = similar_events:create_event_store() },
 	{ok, InitialState}.
 
 %%--------------------------------------------------------------------

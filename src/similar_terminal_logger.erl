@@ -1,5 +1,5 @@
 %%%-------------------------------------------------------------------
-%%% File : terminal_logger.erl
+%%% File : similar_terminal_logger.erl
 %%% Author : Nicolas R Dufour <nrdufour@gmail.com>
 %%% Created : 2009/06/01
 %%% Description :
@@ -10,7 +10,7 @@
 %%% This software is licensed as described in the file LICENSE, which
 %%% you should have received as part of this distribution.
 %%%-------------------------------------------------------------------
--module(terminal_logger).
+-module(similar_terminal_logger).
 -behaviour(gen_event).
 
 -export([init/1, handle_event/2, terminate/2, handle_call/2, handle_cast/2, handle_info/2, code_change/3]).

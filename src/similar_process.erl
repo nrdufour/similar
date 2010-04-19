@@ -19,7 +19,7 @@
 
 %% Kill a simulation process
 kill_sim_proc(Pid) ->
-	loggers:log("Killing process ~p now", [Pid]),
+	similar_utils:log("Killing process ~p now", [Pid]),
 	exit(Pid, {process, terminated}).
 
 %% Create a new simulation process at the current time (active)
@@ -33,7 +33,7 @@ new_P({Mod, Func, Args}, State) ->
 	NewProcesses = [Pid|State#sm_data.processes],
 
 	% schedule it in the event list
-	NewEvents = events:schedule_process(State#sm_data.events, Pid, CurrentTime),
+	NewEvents = similar_events:schedule_process(State#sm_data.events, Pid, CurrentTime),
 
 	% Add it in the active
 	NewActives = [Pid|State#sm_data.actives],	
