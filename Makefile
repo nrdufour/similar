@@ -1,13 +1,15 @@
-LIBDIR=$(shell erl -eval 'io:format("~s~n", [code:lib_dir()])' -s init stop -noshell)
+ERL        ?= erl 
 
-VERSION=0.0.1
+#EBIN_DIRS  := $(wildcard deps/*/ebin)
+ERLC_FLAGS := -W $(INCLUDE_DIRS:%=-I %) $(EBIN_DIRS:%=-pa %)
+APP        := similar
 
 all:
-	mkdir -p ebin
-	(cd src;$(MAKE))
+	./rebar compile
 
 doc:
-	(cd src; $(MAKE) doc)
+	@mkdir -p doc
+	@$(ERL) -noshell -run edoc_run application '$(APP)' '"."' '[{preprocess, true},{includes, ["."]}]'
 
 test: all 
 	prove t/*.t
@@ -21,11 +23,5 @@ cover: all
 		-s init stop  > /dev/null 2>&1
 
 clean:
-	(cd src;$(MAKE) clean)
-	rm -rf cover/
-	rm -rf ebin/
-
-install: all
-	mkdir -p $(prefix)/$(LIBDIR)/similar-$(VERSION)/ebin
-	for i in ebin/*; do install $$i $(prefix)/$(LIBDIR)/similar-$(VERSION)/$$i ; done
+	./rebar clean
 
