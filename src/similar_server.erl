@@ -129,5 +129,104 @@ terminate(normal, _State) ->
 code_change(_OldVsn, State, _Extra) ->
 	{ok, State}.
 
+
+%%====================================================================
+
+%%--------------------------------------------------------------------
+%% Function: kill_current() -> ok
+%% Description: Kills all active processes.
+%%--------------------------------------------------------------------
+kill_current() ->
+	gen_server:call(?MODULE, kill_current).
+
+%%--------------------------------------------------------------------
+%% Function: reset() -> ok
+%% Description: Kills every processes and resources.
+%%--------------------------------------------------------------------
+reset() ->
+	gen_server:call(?MODULE, reset).
+
+%%--------------------------------------------------------------------
+%% Function: kill_pid(Pid) -> ok
+%% Description: Kills the process/resource managed by the server.
+%%--------------------------------------------------------------------
+kill_pid(Pid) ->
+	gen_server:call(?MODULE, {kill_pid, Pid}). 
+
+%%====================================================================
+
+%%--------------------------------------------------------------------
+%% Function: r() -> list()
+%% Description: Returns the resources list.
+%%--------------------------------------------------------------------
+r() ->
+	gen_server:call(?MODULE, {debug, r}).
+
+%%--------------------------------------------------------------------
+%% Function: p() -> list()
+%% Description: Returns the processes list.
+%%--------------------------------------------------------------------
+p() ->
+	gen_server:call(?MODULE, {debug, p}).
+
+%%--------------------------------------------------------------------
+%% Function: e() -> list()
+%% Description: Returns the events list.
+%%--------------------------------------------------------------------
+e() ->
+	gen_server:call(?MODULE, {debug, e}).
+
+%%--------------------------------------------------------------------
+%% Function: s() -> list()
+%% Description: Returns the properties list.
+%%--------------------------------------------------------------------
+s() ->
+	gen_server:call(?MODULE, {debug, s}).
+
+%%--------------------------------------------------------------------
+%% Function: c() -> list()
+%% Description: Returns the active processes list.
+%%--------------------------------------------------------------------
+c() ->
+	gen_server:call(?MODULE, {debug, c}).
+
+%%====================================================================
+
+%%--------------------------------------------------------------------
+%% Function: event_time() -> int()
+%% Description: Returns the current simulation time.
+%%--------------------------------------------------------------------
+event_time() ->
+	gen_server:call(?MODULE, event_time).
+
+%%--------------------------------------------------------------------
+%% Function: trace(boolean) -> ok
+%% Description: Activate/Deactive the traces
+%%--------------------------------------------------------------------
+trace(true)  -> gen_server:call(?MODULE, {trace, on});
+
+trace(false) -> gen_server:call(?MODULE, {trace, off}).
+
+%%====================================================================
+
+%%--------------------------------------------------------------------
+%% Function: new_P(Mod, Func, Args) -> {ok, Pid}
+%% Description: Initiates a new process based on the MFA arguments.
+%%--------------------------------------------------------------------
+new_P(Mod, Func, Args) ->
+	gen_server:call(?MODULE, {new_P, Mod, Func, Args}).
+
+%%--------------------------------------------------------------------
+%% Function: hold(Time) -> ok
+%% Description: Holds the calling process at the given time
+%%--------------------------------------------------------------------
+hold(Time) ->
+	gen_server:call(?MODULE, {hold, Time, self()}),
+	receive
+		startagain ->
+			true
+	end.
+
+
 %% END
 	
