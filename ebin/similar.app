@@ -13,7 +13,7 @@
      ]},
      {registered, [similar_server, similar_sup]},
      {applications, [kernel, stdlib]},
-     {mod, {orange, []}},
+     {mod, {similar, []}},
      {start_phases, []},
      {env, [ {conf, "./similar.conf"} ]}
 ]}.
