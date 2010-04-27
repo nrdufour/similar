@@ -7,7 +7,7 @@ APP        := similar
 all:
 	./rebar compile
 
-doc:
+doc: all
 	@mkdir -p doc
 	@$(ERL) -noshell -run edoc_run application '$(APP)' '"."' '[{preprocess, true},{includes, ["."]}]'
 
