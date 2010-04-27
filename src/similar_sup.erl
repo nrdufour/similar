@@ -19,16 +19,7 @@
 -behavior(supervisor).
 -author('Nicolas R Dufour <nrdufour@gmail.com>').
 
--export([start/0, start_in_shell_for_testing/0, start_link/1, init/1]).
-
-start() ->
-    spawn(fun() ->
-        supervisor:start_link({local, ?MODULE}, ?MODULE, _Arg = [])
-    end).
-
-start_in_shell_for_testing() ->
-    {ok, Pid} = supervisor:start_link({local, ?MODULE}, ?MODULE, _Arg = []),
-    unlink(Pid).
+-export([start_link/1, init/1]).
 
 start_link(Args) ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, Args).
@@ -38,13 +29,19 @@ init([]) ->
     %%gen_event:swap_handler(alarm_handler,
     %%            {alarm_handler, swap},
     %%            {my_alarm_handler, xyz}),
+
+    SimilarManager = {similar_manager,
+        {similar_server, start_link, []},
+        permanent,
+	10000,
+	worker,
+	[similar_server]
+    },
+
+    Strategies = {
+        {one_for_one, 10, 3600},
+	[SimilarManager]
+    },
     
-    {ok, {{one_for_one, 3, 10},
-        [{tag1,
-            {similar_server, start_link, []},
-            permanent,
-            10000,
-            worker,
-            [similar_server]}
-    ]}}.
+    {ok, Strategies}.
 
