@@ -17,45 +17,18 @@
 
 -module(similar_process).
 
--export([kill_sim_proc/1, new_P/2, process_terminate/2]).
+-export([create/3, terminate/1]).
 
--include("similar_data.hrl").
+
+%% create a new simulation process and returns its pid
+create(Mod, Func, Args) ->
+	similar_utils:log("Starting process ~p:~p now", [Mod, Func]),
+	spawn_link(Mod, Func, Args).
 
 %% Kill a simulation process
-kill_sim_proc(Pid) ->
+terminate(Pid) ->
 	similar_utils:log("Killing process ~p now", [Pid]),
 	exit(Pid, {process, terminated}).
-
-%% Create a new simulation process at the current time (active)
-new_P({Mod, Func, Args}, State) ->
-	% Create the process first
-	Pid = spawn_link(Mod, Func, Args),
-
-	CurrentTime = State#sm_data.time,
-
-	% Add it to process list
-	NewProcesses = [Pid|State#sm_data.processes],
-
-	% schedule it in the event list
-	NewEvents = similar_events:schedule_process(State#sm_data.events, Pid, CurrentTime),
-
-	% Add it in the active
-	NewActives = [Pid|State#sm_data.actives],	
-
-	State#sm_data{processes = NewProcesses, events = NewEvents, actives = NewActives}.
-
-%% Clean the simulation state knowing that the given process is dead
-process_terminate(Pid, State) ->
-	% Remove it from the process list
-	NewProcesses = lists:delete(Pid, State#sm_data.processes),
-
-	% Remove it from the active list (if present)
-	NewActives = lists:delete(Pid, State#sm_data.actives),
-
-	% Remove it from the event list (if present)
-	NewEvents = State#sm_data.events,
-
-	State#sm_data{processes = NewProcesses, actives = NewActives, events = NewEvents}.
 
 %% END
 	

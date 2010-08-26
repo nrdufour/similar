@@ -6,6 +6,7 @@
 		similar_events,
 		similar_file_logger,
 		similar_process,
+		similar_manager,
 		similar_query,
 		similar_server,
 		similar_terminal_logger,

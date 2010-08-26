@@ -57,10 +57,10 @@ init(_Args) ->
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
 handle_call(event_time, _From, State) ->
-	{reply, similar_process:event_time(State), State};
+	{reply, similar_query:event_time(State), State};
 
 handle_call({new_P, Mod, Func, Args}, _From, State) ->
-	{reply, ok, similar_process:new_P({Mod, Func, Args}, State)};
+	{reply, ok, similar_manager:new_P({Mod, Func, Args}, State)};
 
 handle_call({trace, on}, _From, State) ->
 	{reply, ok, similar_utils:trace_on(State)};
@@ -93,7 +93,7 @@ handle_call(reset, _From, State) ->
 	{reply, ok, similar_utils:reset(State)};
 
 handle_call({kill_pid, Pid}, _From, State) ->
-	similar_process:kill_sim_proc(Pid),
+	similar_process:terminate(Pid),
 	{reply, ok, State}.
 
 %%--------------------------------------------------------------------
@@ -114,7 +114,7 @@ handle_cast(stop, State) ->
 handle_info({'EXIT', Pid, Reason}, State) ->
 	case Reason of
 		{process, _} ->
-			NewState = similar_process:process_terminate(Pid, State),
+			NewState = similar_manager:kill_P(Pid, State),
 			{noreply, NewState};
 		_ ->
 			io:format("Received an unknown EXIT signal from ~p with Reason ~p~n", [Pid, Reason]),
