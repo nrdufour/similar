@@ -12,7 +12,7 @@ doc: all
 	@$(ERL) -noshell -run edoc_run application '$(APP)' '"."' '[{preprocess, true},{includes, ["."]}]'
 
 test: all 
-	prove t/*.t
+	prove -v t/*.t
 
 cover: all 
 	rm -f cover/*.coverdata
