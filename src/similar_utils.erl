@@ -21,6 +21,7 @@
 
 -include("similar_data.hrl").
 
+%% create an empty simulation state
 create_sim_state() ->
 	#sm_data{events = similar_events:create_event_store()}.
 

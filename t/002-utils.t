@@ -23,6 +23,12 @@ main(_) ->
 	etap:is(0, State#sm_data.time, "Time should be 0"),
 	etap:is([], State#sm_data.props, "Props should be empty"),
 	etap:is(false, State#sm_data.trace, "Trace should be false"),
+	
+	TraceOnState = similar_utils:trace_on(State),
+	etap:is(true, TraceOnState#sm_data.trace, "Trace should be true"),
+	
+	TraceOffState = similar_utils:trace_off(TraceOnState),
+	etap:is(false, TraceOffState#sm_data.trace, "Trace should be false"),
 
 	etap:end_tests(),
 	ok.
