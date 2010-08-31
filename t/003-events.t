@@ -22,6 +22,7 @@ main(_) ->
 	test_schedule_process_with_two_processes(),
 	test_schedule_process_with_three_processes(),
 	test_terminate_event(),
+	test_get_first_event(),
 
 	etap:end_tests(),
 	ok.
@@ -118,6 +119,34 @@ test_terminate_event() ->
 	etap:is(dict:is_key(First, EV6), false, "First key should be gone"),
 	etap:is(dict:is_key(Second, EV6), false, "Second key should be done too"),
 	etap:is(dict:is_key(Third, EV6), false, "Third key should be gone too").
+
+test_get_first_event() ->
+	EV = similar_events:create_event_store(),
+
+	NilEvent = similar_events:get_first_event(EV),
+	etap:is(NilEvent, nil, "An empty event store should return a nil first event"),
+
+	%% adding a process
+	First = 123,
+	EV2 = similar_events:schedule_process(EV, First, First),
+
+	FirstEvent = similar_events:get_first_event(EV2),
+	etap:is(FirstEvent#sm_event.timestamp, First, "FirstEvent timestamp should be 123"),
+	etap:is(FirstEvent#sm_event.procs, [First], "FirstEvent procs should be [123]"),
+
+	%% adding a process later
+	Second = 456,
+	EV3 = similar_events:schedule_process(EV2, Second, Second),
+	StillFirstEvent = similar_events:get_first_event(EV3),
+	etap:is(StillFirstEvent#sm_event.timestamp, First, "FirstEvent timestamp should still be 123"),
+	etap:is(StillFirstEvent#sm_event.procs, [First], "FirstEvent procs should still be [123]"),
+
+	%% add a process before
+	Before = 2,
+	EV4 = similar_events:schedule_process(EV3, Before, Before),
+	BeforeEvent = similar_events:get_first_event(EV4),
+	etap:is(BeforeEvent#sm_event.timestamp, Before, "FirstEvent timestamp should now be 2"),
+	etap:is(BeforeEvent#sm_event.procs, [Before], "FirstEvent procs should now be [2]").
 
 is_dict(D) ->
 	case catch dict:to_list(D) of
