@@ -21,6 +21,7 @@ main(_) ->
 	test_schedule_process_with_one_process(),
 	test_schedule_process_with_two_processes(),
 	test_schedule_process_with_three_processes(),
+	test_terminate_event(),
 
 	etap:end_tests(),
 	ok.
@@ -88,6 +89,35 @@ test_schedule_process_with_three_processes() ->
 	UnchangedStoredEvent = dict:fetch(Timestamp, UpdatedEventStoreWith2Timestamp),
 	etap:is(UnchangedStoredEvent#sm_event.timestamp, Timestamp, "Stored event should have the same timestamp"),
 	etap:is(UnchangedStoredEvent#sm_event.procs, [SecondProcess, Process], "Still 2 processes").
+
+test_terminate_event() ->
+	First = 123,
+	Second = 456,
+	Third = 789,
+	EventStore = similar_events:create_event_store(),
+
+	EV1 = similar_events:schedule_process(EventStore, First, First),
+	EV2 = similar_events:schedule_process(EV1, Second, Second),
+	EV3 = similar_events:schedule_process(EV2, Third, Third),
+
+	etap:is(dict:is_key(First, EV3), true, "First key"),
+	etap:is(dict:is_key(Second, EV3), true, "Second key"),
+	etap:is(dict:is_key(Third, EV3), true, "Third key"),
+
+	EV4 = similar_events:terminate_event(EV3, First),
+	etap:is(dict:is_key(First, EV4), false, "First key should be gone"),
+	etap:is(dict:is_key(Second, EV4), true, "Second key should still be there"),
+	etap:is(dict:is_key(Third, EV4), true, "Third key should still be there"),
+
+	EV5 = similar_events:terminate_event(EV4, Third),
+	etap:is(dict:is_key(First, EV5), false, "First key should be gone"),
+	etap:is(dict:is_key(Second, EV5), true, "Second key should still be there"),
+	etap:is(dict:is_key(Third, EV5), false, "Third should be gone"),
+
+	EV6 = similar_events:terminate_event(EV5, Second),
+	etap:is(dict:is_key(First, EV6), false, "First key should be gone"),
+	etap:is(dict:is_key(Second, EV6), false, "Second key should be done too"),
+	etap:is(dict:is_key(Third, EV6), false, "Third key should be gone too").
 
 is_dict(D) ->
 	case catch dict:to_list(D) of
