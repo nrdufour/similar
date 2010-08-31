@@ -19,7 +19,6 @@
 
 -export([create/3, terminate/1]).
 
-
 %% create a new simulation process and returns its pid
 create(Mod, Func, Args) ->
 	similar_utils:log("Starting process ~p:~p now", [Mod, Func]),

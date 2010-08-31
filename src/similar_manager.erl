@@ -17,7 +17,7 @@
 
 -module(similar_manager).
 
--export([new_P/2, kill_P/2]).
+-export([new_P/2, clean_dead_P/2]).
 
 -include("similar_data.hrl").
 
@@ -40,7 +40,7 @@ new_P({Mod, Func, Args}, State) ->
 	State#sm_data{processes = NewProcesses, events = NewEvents, actives = NewActives}.
 
 %% Clean the simulation state knowing that the given process is dead
-kill_P(Pid, State) ->
+clean_dead_P(Pid, State) ->
 	% Remove it from the process list
 	NewProcesses = lists:delete(Pid, State#sm_data.processes),
 
