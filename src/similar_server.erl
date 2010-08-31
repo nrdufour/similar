@@ -114,7 +114,7 @@ handle_cast(stop, State) ->
 handle_info({'EXIT', Pid, Reason}, State) ->
 	case Reason of
 		{process, _} ->
-			NewState = similar_manager:kill_P(Pid, State),
+			NewState = similar_manager:clean_dead_P(Pid, State),
 			{noreply, NewState};
 		_ ->
 			io:format("Received an unknown EXIT signal from ~p with Reason ~p~n", [Pid, Reason]),
