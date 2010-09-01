@@ -17,7 +17,7 @@
 
 -module(similar_process).
 
--export([create/3, terminate/1]).
+-export([create/3, terminate/1, fall_asleep/1]).
 
 %% create a new simulation process and returns its pid
 create(Mod, Func, Args) ->
@@ -28,6 +28,11 @@ create(Mod, Func, Args) ->
 terminate(Pid) ->
 	similar_utils:log("Killing process ~p now", [Pid]),
 	exit(Pid, {process, terminated}).
+
+fall_asleep(Pid) ->
+	receive
+		wake_up -> similar_utils:log("Pid ~p is waking up!", [Pid])
+	end.
 
 %% END
 	
