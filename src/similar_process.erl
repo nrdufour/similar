@@ -21,8 +21,15 @@
 
 %% create a new simulation process and returns its pid
 create(Mod, Func, Args) ->
-	similar_utils:log("Starting process ~p:~p now", [Mod, Func]),
-	spawn_link(Mod, Func, Args).
+	ProcessFun = fun(M, F, A) ->
+		similar_utils:log("Starting process ~p:~p now", [Mod, Func]),
+		similar_process:fall_asleep(self()),
+		%% The execution ----
+		M:F(A),
+		%% ------------------
+		similar_utils:log("Ending process ~p:~p now", [Mod, Func])
+	end,
+	spawn_link(ProcessFun, [Mod, Func, Args]).
 
 %% Kill a simulation process
 terminate(Pid) ->
@@ -32,7 +39,8 @@ terminate(Pid) ->
 fall_asleep(Pid) ->
 	receive
 		wake_up -> similar_utils:log("Pid ~p is waking up!", [Pid])
-	end.
+	end,
+	ok.
 
 %% END
 	
