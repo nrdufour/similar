@@ -30,17 +30,20 @@ test_create_sim_state() ->
 	etap:is(State#sm_data.actives, [], "Actives should be empty"),
 	etap:is(State#sm_data.time, 0, "Time should be 0"),
 	etap:is(State#sm_data.props, [], "Props should be empty"),
-	etap:is(State#sm_data.trace, false, "Trace should be false").
+	etap:is(State#sm_data.trace, false, "Trace should be false"),
+	ok.
 
 test_trace_on() ->
 	State = similar_utils:create_sim_state(),
 	TraceState = similar_utils:trace_on(State),
-	etap:is(TraceState#sm_data.trace, true, "Trace should be true").
+	etap:is(TraceState#sm_data.trace, true, "Trace should be true"),
+	ok.
 
 test_trace_off() ->
 	State = similar_utils:create_sim_state(),
 	TraceState = similar_utils:trace_off(State),
-	etap:is(TraceState#sm_data.trace, false, "Trace should be false").
+	etap:is(TraceState#sm_data.trace, false, "Trace should be false"),
+	ok.
 
 is_dict(D) ->
 	case catch dict:to_list(D) of

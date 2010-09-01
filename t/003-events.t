@@ -35,11 +35,13 @@ test_create_event() ->
 	Procs = [ 1, 2, 3 ],
 	EventWithProcs = similar_events:create_event(Timestamp, Procs),
 	etap:is(EventWithProcs#sm_event.timestamp, Timestamp, "Event should have the right timestamp"),
-	etap:is(EventWithProcs#sm_event.procs, Procs, "Event should have the right procs").
+	etap:is(EventWithProcs#sm_event.procs, Procs, "Event should have the right procs"),
+	ok.
 
 test_create_event_store() ->
 	EventStore = similar_events:create_event_store(),
-	etap:is(is_dict(EventStore), true, "An event store should be a dict").
+	etap:is(is_dict(EventStore), true, "An event store should be a dict"),
+	ok.
 
 test_schedule_process_with_one_process() ->
 	%% create an event store and a fake process id
@@ -52,7 +54,8 @@ test_schedule_process_with_one_process() ->
 	etap:is(dict:is_key(Timestamp, UpdatedEventStore), true, "Timestamp should be a key"),
 	Event = dict:fetch(Timestamp, UpdatedEventStore),
 	etap:is(Event#sm_event.timestamp, Timestamp, "Stored event should have the same timestamp"),
-	etap:is(Event#sm_event.procs, [Process], "Stored event should have the proc in the list").
+	etap:is(Event#sm_event.procs, [Process], "Stored event should have the proc in the list"),
+	ok.
 
 test_schedule_process_with_two_processes() ->
 	%% create an event store and schedule a first process
@@ -67,7 +70,8 @@ test_schedule_process_with_two_processes() ->
 	etap:is(dict:is_key(Timestamp, UpdatedEventStoreWith2Process), true, "Timestamp should be a key"),
 	UpdatedStoredEvent = dict:fetch(Timestamp, UpdatedEventStoreWith2Process),
 	etap:is(UpdatedStoredEvent#sm_event.timestamp, Timestamp, "Stored event should have the same timestamp"),
-	etap:is(UpdatedStoredEvent#sm_event.procs, [SecondProcess, Process], "2 processes now").
+	etap:is(UpdatedStoredEvent#sm_event.procs, [SecondProcess, Process], "2 processes now"),
+	ok.
 	
 test_schedule_process_with_three_processes() ->
 	%% create an event store and first schedule two processes at a different timestamp
@@ -89,7 +93,8 @@ test_schedule_process_with_three_processes() ->
 	etap:is(NewStoredEvent#sm_event.procs, [ThirdProcess], "The new event should have the process"),
 	UnchangedStoredEvent = dict:fetch(Timestamp, UpdatedEventStoreWith2Timestamp),
 	etap:is(UnchangedStoredEvent#sm_event.timestamp, Timestamp, "Stored event should have the same timestamp"),
-	etap:is(UnchangedStoredEvent#sm_event.procs, [SecondProcess, Process], "Still 2 processes").
+	etap:is(UnchangedStoredEvent#sm_event.procs, [SecondProcess, Process], "Still 2 processes"),
+	ok.
 
 test_terminate_event() ->
 	First = 123,
@@ -118,7 +123,8 @@ test_terminate_event() ->
 	EV6 = similar_events:terminate_event(EV5, Second),
 	etap:is(dict:is_key(First, EV6), false, "First key should be gone"),
 	etap:is(dict:is_key(Second, EV6), false, "Second key should be done too"),
-	etap:is(dict:is_key(Third, EV6), false, "Third key should be gone too").
+	etap:is(dict:is_key(Third, EV6), false, "Third key should be gone too"),
+	ok.
 
 test_get_first_event() ->
 	EV = similar_events:create_event_store(),
@@ -146,7 +152,8 @@ test_get_first_event() ->
 	EV4 = similar_events:schedule_process(EV3, Before, Before),
 	BeforeEvent = similar_events:get_first_event(EV4),
 	etap:is(BeforeEvent#sm_event.timestamp, Before, "FirstEvent timestamp should now be 2"),
-	etap:is(BeforeEvent#sm_event.procs, [Before], "FirstEvent procs should now be [2]").
+	etap:is(BeforeEvent#sm_event.procs, [Before], "FirstEvent procs should now be [2]"),
+	ok.
 
 is_dict(D) ->
 	case catch dict:to_list(D) of
