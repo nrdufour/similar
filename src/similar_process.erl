@@ -17,19 +17,20 @@
 
 -module(similar_process).
 
--export([create/3, terminate/1, fall_asleep/1]).
+-export([create/3, execute/3, terminate/1, fall_asleep/1]).
 
 %% create a new simulation process and returns its pid
 create(Mod, Func, Args) ->
-	ProcessFun = fun(M, F, A) ->
-		similar_utils:log("Starting process ~p:~p now", [Mod, Func]),
-		similar_process:fall_asleep(self()),
-		%% The execution ----
-		M:F(A),
-		%% ------------------
-		similar_utils:log("Ending process ~p:~p now", [Mod, Func])
-	end,
-	spawn_link(ProcessFun, [Mod, Func, Args]).
+	spawn_link(similar_process, execute, [Mod, Func, Args]).
+
+execute(Mod, Func, Args) ->
+	similar_utils:log("Starting process ~p:~p now", [Mod, Func]),
+	similar_process:fall_asleep(self()),
+	%% The execution ----
+	Result = apply(Mod, Func, Args),
+	%% ------------------
+	similar_utils:log("Ending process ~p:~p now with result: ~p", [Mod, Func, Result]),
+	ok.
 
 %% Kill a simulation process
 terminate(Pid) ->
