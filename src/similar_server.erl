@@ -128,7 +128,7 @@ handle_info({'EXIT', Pid, Reason}, State) ->
 %% cleaning up. When it returns, the gen_server terminates with Reason.
 %% The return value is ignored.
 %%--------------------------------------------------------------------
-terminate(normal, _State) ->
+terminate(_Reason, _State) ->
 	ok.
 
 %%--------------------------------------------------------------------
