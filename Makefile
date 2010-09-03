@@ -2,11 +2,12 @@ ERL          ?= erl
 ERLC	     ?= erlc
 APP          := similar
 
-all: deps docs
+#all: deps docs
+all: docs
 	./rebar compile
 
-deps:
-	./rebar get-deps
+#deps:
+#	./rebar get-deps
 
 docs:
 	@mkdir -p doc/api
