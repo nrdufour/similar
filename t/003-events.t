@@ -1,20 +1,20 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -pz ./ebin
+%%! -pa ./ebin -pa ./t
 
 -include_lib("./include/similar_data.hrl").
 
 main(_) ->
 	etap:plan(unknown),
 
-	etap_can:loaded_ok(similar_events, "Module 'similar_events' loaded."),
-	etap_can:can_ok(similar_events, create_event, 1),
-	etap_can:can_ok(similar_events, create_event, 2),
-	etap_can:can_ok(similar_events, create_event_store, 0),
-	etap_can:can_ok(similar_events, schedule_process, 3),
-	etap_can:can_ok(similar_events, terminate_event, 2),
-	etap_can:can_ok(similar_events, get_first_event, 1),
-	etap_can:can_ok(similar_events, get_event, 2),
+	etap:loaded_ok(similar_events, "Module 'similar_events' loaded."),
+	etap:can_ok(similar_events, create_event, 1),
+	etap:can_ok(similar_events, create_event, 2),
+	etap:can_ok(similar_events, create_event_store, 0),
+	etap:can_ok(similar_events, schedule_process, 3),
+	etap:can_ok(similar_events, terminate_event, 2),
+	etap:can_ok(similar_events, get_first_event, 1),
+	etap:can_ok(similar_events, get_event, 2),
 
 	test_create_event(),
 	test_create_event_store(),

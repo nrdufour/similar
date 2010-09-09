@@ -1,20 +1,20 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -pz ./ebin
+%%! -pa ./ebin -pa ./t
 
 -include_lib("./include/similar_data.hrl").
 
 main(_) ->
 	etap:plan(unknown),
 
-	etap_can:loaded_ok(similar_utils, "Module 'similar_utils' loaded."),
-	etap_can:can_ok(similar_utils, create_sim_state, 0),
-	etap_can:can_ok(similar_utils, trace_on, 1),
-	etap_can:can_ok(similar_utils, trace_off, 1),
-	etap_can:can_ok(similar_utils, kill_current, 1),
-	etap_can:can_ok(similar_utils, reset, 1),
-	etap_can:can_ok(similar_utils, log, 2),
-	etap_can:can_ok(similar_utils, format_time, 1),
+	etap:loaded_ok(similar_utils, "Module 'similar_utils' loaded."),
+	etap:can_ok(similar_utils, create_sim_state, 0),
+	etap:can_ok(similar_utils, trace_on, 1),
+	etap:can_ok(similar_utils, trace_off, 1),
+	etap:can_ok(similar_utils, kill_current, 1),
+	etap:can_ok(similar_utils, reset, 1),
+	etap:can_ok(similar_utils, log, 2),
+	etap:can_ok(similar_utils, format_time, 1),
 
 	test_create_sim_state(),
 	test_trace_on(),
