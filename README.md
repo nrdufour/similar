@@ -1,5 +1,4 @@
-README FILE
------------
+### Overview
 
 Similar is an erlang application providing a discrete event simulation engine.
 
