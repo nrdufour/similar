@@ -12,7 +12,7 @@
 		similar_terminal_logger,
 	        similar_utils
      ]},
-     {registered, [similar_server, similar_sup]},
+     {registered, []},
      {applications, [kernel, stdlib]},
      {mod, {similar, []}},
      {start_phases, []},
