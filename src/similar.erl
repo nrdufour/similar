@@ -38,7 +38,7 @@ start(_Type, StartArgs) ->
 			{error, Reason}
 	end,
 	gen_event:start({local, sm_msg_man}),
-	gen_event:add_handler(sm_msg_man, similar_terminal_logger, []),
+	gen_event:add_handler(sm_msg_man, similar_logger, []),
 	similar_utils:log("Similar Engine is starting!", []),
 	Reply.
 

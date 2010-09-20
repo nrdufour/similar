@@ -15,27 +15,28 @@
 %% @author Nicolas R Dufour <nrdufour@gmail.com>
 %% @copyright 2009-2010 Nicolas R Dufour.
 
--module(similar_file_logger).
+-module(similar_logger).
 -behaviour(gen_event).
 
 -export([init/1, handle_event/2, terminate/2, handle_call/2, handle_cast/2, handle_info/2, code_change/3]).
 
-init(File) ->
-	{ok, Fd} = file:open(File, read),
-	State = {true, Fd},
-	{ok, State}.
+%% trace is enabled by default
+init(_Args) ->
+	{ok, true}.
 
-handle_event({trace, Trace}, {_Trace, Fd}) ->
-	{ok, {Trace, Fd}};
+%% activate or not the trace
+handle_event({trace, Trace}, _State) ->
+	{ok, Trace};
 
-handle_event(Msg, {Trace, Fd}) ->
+%% display a simple message
+handle_event(Msg, State) ->
 	if
-		Trace ->
-			io:format(Fd, Msg);
+		State ->
+			io:format(Msg);
 		true ->
 			true
 	end,
-	{ok, {Trace, Fd}}.
+	{ok, State}.
 
 handle_call(_, State) ->
 	{noreply, State}.
@@ -49,7 +50,7 @@ handle_info(_Info, State) ->
 code_change(_OldVsn, State, _Extra) ->
 	{ok, State}.
 
-terminate(_Args, {_Trace, Fd}) ->
-	file:close(Fd).
+terminate(_Args, _State) ->
+	ok.
 
-%% END
+%%% END
