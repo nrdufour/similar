@@ -24,10 +24,6 @@
 init(_Args) ->
 	{ok, true}.
 
-%% activate or not the trace
-handle_event({trace, Trace}, _State) ->
-	{ok, Trace};
-
 %% display a simple message
 handle_event(Msg, State) ->
 	if
@@ -38,8 +34,20 @@ handle_event(Msg, State) ->
 	end,
 	{ok, State}.
 
+%% activate or not the trace
+handle_call({trace, true}, _State) ->
+	{ok, true};
+handle_call({trace, false}, _State) ->
+	{ok, false};
+
+%% returns true if the logger is activated, false otherwise
+handle_call(is_activated, State) ->
+	{{ok,State}, State};
+
 handle_call(_, State) ->
 	{noreply, State}.
+
+%% --
 
 handle_cast(_, State) ->
 	{noreply, State}.
