@@ -37,8 +37,7 @@ start(_Type, StartArgs) ->
 		{error, Reason} ->
 			{error, Reason}
 	end,
-	gen_event:start({local, sm_msg_man}),
-	gen_event:add_handler(sm_msg_man, similar_logger, []),
+	similar_log:start(),
 	similar_log:log("Similar Engine is starting!", []),
 	Reply.
 
@@ -53,7 +52,7 @@ start() ->
 stop(_State) ->
 	similar_log:log("Similar Engine is stopping!", []),
 	similar_server:reset(),
-	gen_event:stop(sm_msg_man),
+	similar_log:stop(),
 	ok.
 
 %%====================================================================
