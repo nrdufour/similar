@@ -19,7 +19,7 @@
 
 -record(sm_data,
 	{
-	%%% {EvTree; R;E;Current; RealTime; SList; Trace}
+	%%% {EvTree; R;E;Current; RealTime; SList}
 
 	%% Events to be scheduled
 	events = [],
@@ -32,9 +32,7 @@
 	%% Simulation time
 	time = 0,
 	%% Properties
-	props = [],
-	%% Activate the traces or not
-	trace = false
+	props = []
 	}
 ).
 

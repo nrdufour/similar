@@ -17,19 +17,13 @@
 
 -module(similar_utils).
 
--export([create_sim_state/0, trace_on/1, trace_off/1, kill_current/1, reset/1]).
+-export([create_sim_state/0, kill_current/1, reset/1]).
 
 -include("similar.hrl").
 
 %% create an empty simulation state
 create_sim_state() ->
 	#sm_data{events = similar_events:create_event_store()}.
-
-trace_on(State) ->
-	State#sm_data{trace = true}.
-
-trace_off(State) ->
-	State#sm_data{trace = false}.
 
 kill_current(State) ->
 	State.
