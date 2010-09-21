@@ -24,22 +24,22 @@ create(Mod, Func, Args) ->
 	spawn_link(similar_process, execute, [Mod, Func, Args]).
 
 execute(Mod, Func, Args) ->
-	similar_utils:log("Starting process ~p:~p now", [Mod, Func]),
+	similar_log:log_format("Starting process ~p:~p now", [Mod, Func]),
 	similar_process:fall_asleep(self()),
 	%% The execution ----
 	Result = apply(Mod, Func, Args),
 	%% ------------------
-	similar_utils:log("Ending process ~p:~p now with result: ~p", [Mod, Func, Result]),
+	similar_log:log_format("Ending process ~p:~p now with result: ~p", [Mod, Func, Result]),
 	ok.
 
 %% Kill a simulation process
 terminate(Pid) ->
-	similar_utils:log("Killing process ~p now", [Pid]),
+	similar_log:log_format("Killing process ~p now", [Pid]),
 	exit(Pid, {process, terminated}).
 
 fall_asleep(Pid) ->
 	receive
-		wake_up -> similar_utils:log("Pid ~p is waking up!", [Pid])
+		wake_up -> similar_log:log_format("Pid ~p is waking up!", [Pid])
 	end,
 	ok.
 

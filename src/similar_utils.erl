@@ -17,7 +17,7 @@
 
 -module(similar_utils).
 
--export([create_sim_state/0, trace_on/1, trace_off/1, kill_current/1, reset/1, log/2, format_time/1]).
+-export([create_sim_state/0, trace_on/1, trace_off/1, kill_current/1, reset/1]).
 
 -include("similar.hrl").
 
@@ -40,17 +40,7 @@ reset(State) ->
 	State#sm_data{events = similar_events:create_event_store(), resources = [], processes = [], actives = []}.
 
 kill_erlang_process(Pid) ->
-	log("Killing process ~p now", [Pid]),
+	similar_log:log_format("Killing process ~p now", [Pid]),
 	exit(Pid, terminated).
-
-log(Format, Args) ->
-	Msg = io_lib:format(Format, Args),
-	{_Date, Time} = calendar:local_time(),
-	FormattedTime = format_time(Time),
-	Final = io_lib:format("[~s] -- ~s ~n", [FormattedTime, Msg]),
-        gen_event:notify(sm_msg_man, Final).
-
-format_time({Hour, Minute, Second}) ->
-	io_lib:format("~2..0w:~2..0w:~2..0w", [Hour, Minute, Second]).
 
 %% END

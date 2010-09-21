@@ -15,6 +15,8 @@
 %% @author Nicolas R Dufour <nrdufour@gmail.com>
 %% @copyright 2009-2010 Nicolas R Dufour.
 
+-define(LOG_EM, sm_evm_logger).
+
 -record(sm_data,
 	{
 	%%% {EvTree; R;E;Current; RealTime; SList; Trace}
