@@ -2,7 +2,7 @@
 %% -*- erlang -*-
 %%! -pa ./ebin -pa ./t
 
--include_lib("./include/similar_data.hrl").
+-include_lib("./include/similar.hrl").
 
 main(_) ->
 	etap:plan(unknown),

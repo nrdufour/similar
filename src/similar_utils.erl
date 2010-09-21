@@ -19,7 +19,7 @@
 
 -export([create_sim_state/0, trace_on/1, trace_off/1, kill_current/1, reset/1, log/2, format_time/1]).
 
--include("similar_data.hrl").
+-include("similar.hrl").
 
 %% create an empty simulation state
 create_sim_state() ->

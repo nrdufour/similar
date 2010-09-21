@@ -19,7 +19,7 @@
 
 -export([create_event/1, create_event/2, create_event_store/0, schedule_process/3, terminate_event/2, get_first_event/1, get_event/2]).
 
--include("similar_data.hrl").
+-include("similar.hrl").
 
 create_event(Timestamp) ->
 	#sm_event{timestamp = Timestamp}.

@@ -9,6 +9,7 @@
 		similar_query,
 		similar_server,
 		similar_logger,
+		similar_log,
 	        similar_utils
      ]},
      {registered, []},

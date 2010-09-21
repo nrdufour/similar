@@ -19,7 +19,7 @@
 
 -export([new_P/2, clean_dead_P/2]).
 
--include("similar_data.hrl").
+-include("similar.hrl").
 
 %% Create a new simulation process at the current time (active)
 new_P({Mod, Func, Args}, State) ->

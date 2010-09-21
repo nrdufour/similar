@@ -25,7 +25,7 @@
         terminate/2, code_change/3]).
 -compile(export_all).
 
--include("similar_data.hrl").
+-include("similar.hrl").
 
 start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
