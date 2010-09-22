@@ -17,10 +17,40 @@
 
 -define(LOG_EM, sm_evm_logger).
 
+%% Scenario Process Description
+%% Describe a process to start during a scenario
+-record(pdesc,
+	{
+	%% Module
+	mod,
+	%% Function
+	func,
+	%% Arguments
+	args,
+	%% Time to activate it
+	time = 0
+	}
+).
+
+%% Scenario
+-record(scenario,
+	{
+	%% Scenario name -- Informational
+	name = "Unknown Scenario",
+	%% List of pdesc structures: processes to use
+	processes = [],
+	%% List of resources -- TBD
+	resources = [],
+	%% Instant t0 -- can be greater
+	time = 0,
+	%% meta data -- dict TBD
+	meta = []
+	}
+).
+
+%% Simulation Data
 -record(sm_data,
 	{
-	%%% {EvTree; R;E;Current; RealTime; SList}
-
 	%% Events to be scheduled
 	events = [],
 	%% Resources list
@@ -36,12 +66,13 @@
 	}
 ).
 
+%% Simulation Event
 -record(sm_event,
 	{
-		%% Event timestamp
-		timestamp = 0,
-		%% Processes to wake up at that timestamp
-		procs = []
+	%% Event timestamp
+	timestamp = 0,
+	%% Processes to wake up at that timestamp
+	procs = []
 	}
 ).
 
