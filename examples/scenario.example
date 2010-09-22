@@ -1,0 +1,10 @@
+{name, "Scenario Example"}.
+{processes, [
+	{pdesc, {similar_log, log, ["Hello ~p~n", ["World"]]}}
+	]}.
+{resources, []}.
+{time, 0}.
+{meta, [
+	{author, "Nicolas R Dufour"},
+	{version, "1.0"}
+	]};
