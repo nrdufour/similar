@@ -15,7 +15,7 @@
 %% @author Nicolas R Dufour <nrdufour@gmail.com>
 %% @copyright 2009-2010 Nicolas R Dufour.
 
--module(similar_server).
+-module(similar_engine).
 -behaviour(gen_server).
 
 -export([start_link/0]).

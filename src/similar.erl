@@ -51,7 +51,7 @@ start() ->
 
 stop(_State) ->
 	similar_log:log("Similar Engine is stopping!", []),
-	similar_server:reset(),
+	similar_engine:reset(),
 	similar_log:stop(),
 	ok.
 

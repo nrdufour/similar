@@ -31,11 +31,11 @@ init([]) ->
     %%            {my_alarm_handler, xyz}),
 
     SimilarManager = {similar_manager,
-        {similar_server, start_link, []},
+        {similar_engine, start_link, []},
         permanent,
 	10000,
 	worker,
-	[similar_server]
+	[similar_engine]
     },
 
     Strategies = {
