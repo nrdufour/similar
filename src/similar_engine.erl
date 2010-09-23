@@ -62,12 +62,6 @@ handle_call(event_time, _From, State) ->
 handle_call({new_P, Mod, Func, Args}, _From, State) ->
 	{reply, ok, new_P({Mod, Func, Args}, State)};
 
-handle_call({trace, on}, _From, State) ->
-	{reply, ok, similar_utils:trace_on(State)};
-
-handle_call({trace, off}, _From, State) ->
-	{reply, ok, similar_utils:trace_off(State)};
-
 handle_call({debug, r}, _From, State) ->
 	{reply, similar_query:r(State), State};
 
@@ -207,14 +201,6 @@ c() ->
 %%--------------------------------------------------------------------
 event_time() ->
 	gen_server:call(?MODULE, event_time).
-
-%%--------------------------------------------------------------------
-%% Function: trace(boolean) -> ok
-%% Description: Activate/Deactive the traces
-%%--------------------------------------------------------------------
-trace(true)  -> gen_server:call(?MODULE, {trace, on});
-
-trace(false) -> gen_server:call(?MODULE, {trace, off}).
 
 %%====================================================================
 
