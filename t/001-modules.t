@@ -20,28 +20,88 @@ main(_) ->
 test_mod_similar() ->
 	etap:loaded_ok(similar, "Module 'similar' loaded"),
 	etap:is_behaviour(similar, application),
+
+	etap:can_ok(similar, start, 0),
+	etap:can_ok(similar, start, 2),
+	etap:can_ok(similar, stop, 1),
+	
 	ok.
 
 test_mod_events() ->
 	etap:loaded_ok(similar_events, "Module 'similar_events' loaded"),
+
+	etap:can_ok(similar_events, create_event, 1),
+	etap:can_ok(similar_events, create_event, 2),
+	etap:can_ok(similar_events, create_event_store, 0),
+	etap:can_ok(similar_events, schedule_process, 3),
+	etap:can_ok(similar_events, terminate_event, 2),
+	etap:can_ok(similar_events, get_first_event, 1),
+	etap:can_ok(similar_events, get_event, 2),
+
 	ok.
 
 test_mod_process() ->
 	etap:loaded_ok(similar_process, "Module 'similar_process' loaded"),
+
+	etap:can_ok(similar_process, create, 3),
+	etap:can_ok(similar_process, execute, 3),
+	etap:can_ok(similar_process, terminate, 1),
+	etap:can_ok(similar_process, fall_asleep, 1),
+
 	ok.
 
 test_mod_query() ->
 	etap:loaded_ok(similar_query, "Module 'similar_query' loaded"),
+
+	etap:can_ok(similar_query, r, 1),
+	etap:can_ok(similar_query, p, 1),
+	etap:can_ok(similar_query, e, 1),
+	etap:can_ok(similar_query, s, 1),
+	etap:can_ok(similar_query, c, 1),
+	etap:can_ok(similar_query, event_time, 1),
+
+	ok.
+
+test_gen_server_callbacks(Module) ->
+	etap:can_ok(Module, init, 1),
+	etap:can_ok(Module, handle_call, 3),
+	etap:can_ok(Module, handle_cast, 2),
+	etap:can_ok(Module, handle_info, 2),
+	etap:can_ok(Module, terminate, 2),
+	etap:can_ok(Module, code_change, 3),
 	ok.
 
 test_mod_engine() ->
 	etap:loaded_ok(similar_engine, "Module 'similar_engine' loaded"),
 	etap:is_behaviour(similar_engine, gen_server),
+
+	test_gen_server_callbacks(similar_engine),
+
+	etap:can_ok(similar_engine, start_link, 0),
+
+	%% API
+	etap:can_ok(similar_engine, kill_current, 0),
+	etap:can_ok(similar_engine, reset, 0),
+	etap:can_ok(similar_engine, kill_pid, 1),
+	etap:can_ok(similar_engine, r, 0),
+	etap:can_ok(similar_engine, p, 0),
+	etap:can_ok(similar_engine, e, 0),
+	etap:can_ok(similar_engine, s, 0),
+	etap:can_ok(similar_engine, c, 0),
+	etap:can_ok(similar_engine, event_time, 0),
+	etap:can_ok(similar_engine, new_P, 3),
+	etap:can_ok(similar_engine, hold, 1),
+
 	ok.
 
 test_mod_scenario() ->
 	etap:loaded_ok(similar_scenario, "Module 'similar_scenario' loaded"),
 	etap:is_behaviour(similar_scenario, gen_server),
+
+	test_gen_server_callbacks(similar_scenario),
+
+	etap:can_ok(similar_scenario, start_link, 0),
+
 	ok.
 
 test_mod_sup() ->
