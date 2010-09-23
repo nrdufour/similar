@@ -16,7 +16,7 @@
 %% @copyright 2009-2010 Nicolas R Dufour.
 
 -module(similar_sup).
--behavior(supervisor).
+-behaviour(supervisor).
 -author('Nicolas R Dufour <nrdufour@gmail.com>').
 
 -export([start_link/1, init/1]).
