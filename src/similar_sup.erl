@@ -30,7 +30,7 @@ init([]) ->
     %%            {alarm_handler, swap},
     %%            {my_alarm_handler, xyz}),
 
-    SimilarManager = {similar_manager,
+    SimilarEngine = {similar_engine,
         {similar_engine, start_link, []},
         permanent,
 	10000,
@@ -40,7 +40,7 @@ init([]) ->
 
     Strategies = {
         {one_for_one, 10, 3600},
-	[SimilarManager]
+	[SimilarEngine]
     },
     
     {ok, Strategies}.

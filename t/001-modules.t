@@ -3,10 +3,9 @@
 %%! -pa ./ebin -pa ./t
  
 main(_) ->
-	etap:plan(9),
+	etap:plan(8),
 	etap:loaded_ok(similar, "Module 'similar' loaded"),
 	etap:loaded_ok(similar_events, "Module 'similar_events' loaded"),
-	etap:loaded_ok(similar_manager, "Module 'similar_manager' loaded"),
 	etap:loaded_ok(similar_process, "Module 'similar_process' loaded"),
 	etap:loaded_ok(similar_query, "Module 'similar_query' loaded"),
 	etap:loaded_ok(similar_engine, "Module 'similar_engine' loaded"),

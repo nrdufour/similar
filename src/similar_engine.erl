@@ -60,7 +60,7 @@ handle_call(event_time, _From, State) ->
 	{reply, similar_query:event_time(State), State};
 
 handle_call({new_P, Mod, Func, Args}, _From, State) ->
-	{reply, ok, similar_manager:new_P({Mod, Func, Args}, State)};
+	{reply, ok, new_P({Mod, Func, Args}, State)};
 
 handle_call({trace, on}, _From, State) ->
 	{reply, ok, similar_utils:trace_on(State)};
@@ -114,7 +114,7 @@ handle_cast(stop, State) ->
 handle_info({'EXIT', Pid, Reason}, State) ->
 	case Reason of
 		{process, _} ->
-			NewState = similar_manager:clean_dead_P(Pid, State),
+			NewState = clean_dead_P(Pid, State),
 			{noreply, NewState};
 		_ ->
 			io:format("Received an unknown EXIT signal from ~p with Reason ~p~n", [Pid, Reason]),
@@ -236,6 +236,39 @@ hold(Time) ->
 			true
 	end.
 
+%%--------------------------------------------------------------------
+%% Internal API
+%%--------------------------------------------------------------------
+
+%% Create a new simulation process at the current time (active)
+new_P({Mod, Func, Args}, State) ->
+	% Create the process first
+	Pid = similar_process:create(Mod, Func, Args),
+
+	CurrentTime = State#sm_data.time,
+
+	% Add it to process list
+	NewProcesses = [Pid|State#sm_data.processes],
+
+	% schedule it in the event list
+	NewEvents = similar_events:schedule_process(State#sm_data.events, Pid, CurrentTime),
+
+	% Add it in the active
+	NewActives = [Pid|State#sm_data.actives],	
+
+	State#sm_data{processes = NewProcesses, events = NewEvents, actives = NewActives}.
+
+%% Clean the simulation state knowing that the given process is dead
+clean_dead_P(Pid, State) ->
+	% Remove it from the process list
+	NewProcesses = lists:delete(Pid, State#sm_data.processes),
+
+	% Remove it from the active list (if present)
+	NewActives = lists:delete(Pid, State#sm_data.actives),
+
+	% Remove it from the event list (if present)
+	NewEvents = State#sm_data.events,
+
+	State#sm_data{processes = NewProcesses, actives = NewActives, events = NewEvents}.
 
 %% END
-	
