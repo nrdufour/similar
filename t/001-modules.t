@@ -14,6 +14,7 @@ main(_) ->
 	test_mod_logger(),
 	test_mod_log(),
 	test_mod_utils(),
+	test_mod_config(),
 	etap:end_tests(),
 	ok.
 
@@ -148,4 +149,13 @@ test_mod_utils() ->
 	etap:can_ok(similar_utils, reset, 1),
 
 	ok.
+
+test_mod_config() ->
+	etap:loaded_ok(similar_config, "Module 'similar_config' loaded"),
+	etap:is_behaviour(similar_config, gen_server),
+
+	test_gen_server_callbacks(similar_config),
+
+	ok.
+
 
