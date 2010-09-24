@@ -107,18 +107,43 @@ test_mod_scenario() ->
 test_mod_sup() ->
 	etap:loaded_ok(similar_sup, "Module 'similar_sup' loaded"),
 	etap:is_behaviour(similar_sup, supervisor),
+
+	etap:can_ok(similar_sup, start_link, 1),
+	etap:can_ok(similar_sup, init, 1),
+
 	ok.
 
 test_mod_logger() ->
 	etap:loaded_ok(similar_logger, "Module 'similar_logger' loaded"),
 	etap:is_behaviour(similar_logger, gen_event),
+
+	etap:can_ok(similar_logger, init, 1),
+	etap:can_ok(similar_logger, handle_event, 2),
+	etap:can_ok(similar_logger, terminate, 2),
+	etap:can_ok(similar_logger, handle_call, 2),
+	etap:can_ok(similar_logger, handle_cast, 2),
+	etap:can_ok(similar_logger, handle_info, 2),
+	etap:can_ok(similar_logger, code_change, 3),
+
 	ok.
 
 test_mod_log() ->
 	etap:loaded_ok(similar_log, "Module 'similar_log' loaded"),
+
+	etap:can_ok(similar_log, start, 0),
+	etap:can_ok(similar_log, stop, 0),
+	etap:can_ok(similar_log, log, 1),
+	etap:can_ok(similar_log, log, 2),
+	etap:can_ok(similar_log, format_time, 1),
+
 	ok.
 
 test_mod_utils() ->
 	etap:loaded_ok(similar_utils, "Module 'similar_utils' loaded"),
+
+	etap:can_ok(similar_utils, create_sim_state, 0),
+	etap:can_ok(similar_utils, kill_current, 1),
+	etap:can_ok(similar_utils, reset, 1),
+
 	ok.
 
