@@ -2,6 +2,7 @@
     [{description, "Embryo Systems - Similar"},
      {vsn, "0.0.1"},
      {modules, [similar,
+                similar_config,
                 similar_sup,
 		similar_events,
 		similar_process,
