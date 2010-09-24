@@ -34,7 +34,7 @@ reset(State) ->
 	State#sm_data{events = similar_events:create_event_store(), resources = [], processes = [], actives = []}.
 
 kill_erlang_process(Pid) ->
-	similar_log:log("Killing process ~p now", [Pid]),
+	similar_log:info("Killing process ~p now", [Pid]),
 	exit(Pid, terminated).
 
 %% END

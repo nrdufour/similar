@@ -38,7 +38,7 @@ start(_Type, StartArgs) ->
 			{error, Reason}
 	end,
 	similar_log:start(),
-	similar_log:log("Similar Engine is starting!", []),
+	similar_log:info("Similar Engine is starting!", []),
 	Reply.
 
 
@@ -50,7 +50,7 @@ start() ->
 	application:start(similar).
 
 stop(_State) ->
-	similar_log:log("Similar Engine is stopping!", []),
+	similar_log:info("Similar Engine is stopping!", []),
 	similar_engine:reset(),
 	similar_log:stop(),
 	ok.

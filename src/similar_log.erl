@@ -17,7 +17,7 @@
 
 -module(similar_log).
 
--export([start/0, stop/0, log/1, log/2, format_time/1]).
+-export([start/0, stop/0, info/1, info/2]).
 
 -include("similar.hrl").
 
@@ -29,15 +29,17 @@ stop() ->
 	gen_event:delete_handler(?LOG_EM, similar_logger, []),
 	gen_event:stop(?LOG_EM).
 
-log(Msg) ->
+info(Msg) ->
         gen_event:notify(?LOG_EM, Msg).
 
-log(Format, Args) ->
+info(Format, Args) ->
 	Msg = io_lib:format(Format, Args),
 	{_Date, Time} = calendar:local_time(),
 	FormattedTime = format_time(Time),
 	MsgWithDateTime = io_lib:format("[~s] -- ~s ~n", [FormattedTime, Msg]),
-        gen_event:notify(?LOG_EM, MsgWithDateTime).
+	info(MsgWithDateTime).
+
+%% INTERNAL
 
 format_time({Hour, Minute, Second}) ->
         io_lib:format("~2..0w:~2..0w:~2..0w", [Hour, Minute, Second]).
