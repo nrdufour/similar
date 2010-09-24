@@ -1,6 +1,12 @@
 TODO List
 ---------
 
+2010-09-24
+ * Need to reshuffle the functions in the right module even it means to split or merge them.
+ * Need the scenario server to be working.
+ * Need the application itself to use a config server or such.
+
+2010-04-16
  * a working set of active processes.
  * add javascript for the process body (emonk or such).
  * add hold method and change the state the proper way.
