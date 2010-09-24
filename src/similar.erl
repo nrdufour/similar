@@ -25,9 +25,8 @@
 %% User API
 -export([start/0]).
 
-
 %%====================================================================
-%% API
+%% Application API
 %%====================================================================
 
 start(_Type, StartArgs) ->
@@ -41,14 +40,6 @@ start(_Type, StartArgs) ->
 	similar_log:info("Similar Engine is starting!", []),
 	Reply.
 
-
-%%--------------------------------------------------------------------
-%% Function: start() -> {ok, Pid}
-%% Description: Initiates the server
-%%--------------------------------------------------------------------
-start() ->
-	application:start(similar).
-
 stop(_State) ->
 	similar_log:info("Similar Engine is stopping!", []),
 	similar_engine:reset(),
@@ -56,7 +47,15 @@ stop(_State) ->
 	ok.
 
 %%====================================================================
+%% Public API
+%%====================================================================
 
+start() ->
+	application:start(similar).
+
+%%====================================================================
+%% Internal API
+%%====================================================================
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Piece of code written by Benoît Chesneau <benoitc@e-engura.org>
@@ -73,7 +72,6 @@ start_apps([App|Rest]) ->
 			{error, {app_would_not_start, App}}
 	end.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 %% END
 	
