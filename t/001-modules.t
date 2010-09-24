@@ -135,6 +135,8 @@ test_mod_log() ->
 	etap:can_ok(similar_log, info, 1),
 	etap:can_ok(similar_log, info, 2),
 	etap:can_ok(similar_log, format_time, 1),
+	etap:can_ok(similar_log, switch, 1),
+	etap:can_ok(similar_log, is_activated, 0),
 
 	ok.
 

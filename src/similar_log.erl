@@ -17,7 +17,7 @@
 
 -module(similar_log).
 
--export([start/0, stop/0, info/1, info/2]).
+-export([start/0, stop/0, info/1, info/2, switch/1, is_activated/0]).
 
 -include("similar.hrl").
 
@@ -38,6 +38,12 @@ info(Format, Args) ->
 	FormattedTime = format_time(Time),
 	MsgWithDateTime = io_lib:format("[~s] -- ~s ~n", [FormattedTime, Msg]),
 	info(MsgWithDateTime).
+
+switch(OnOrOff) when is_boolean(OnOrOff) ->
+	gen_event:call(?LOG_EM, similar_loggger, {trace, OnOrOff}).
+	
+is_activated() ->
+	gen_event:call(?LOG_EM, similar_logger, is_activated).
 
 %% INTERNAL
 
