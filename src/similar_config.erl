@@ -22,12 +22,18 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
         terminate/2, code_change/3]).
 
--export([start_link/0]).
+-export([start_link/0, get/1, set/2]).
 
 -include("similar.hrl").
 
 start_link() ->
 	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+
+get(Key) ->
+	gen_server:call(?MODULE, {get, Key}).
+
+set(Key, Value) ->
+	gen_server:call(?MODULE, {set, Key, Value}).
 
 %%====================================================================
 %% gen_server callbacks
@@ -91,6 +97,14 @@ get_etc_dir() ->
 %% {stop, Reason, State}
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
+handle_call({get, Key}, _From, State) ->
+	Value = try dict:fetch(Key, State) catch _:_ -> nil end,
+	{reply, {ok, Value}, State};
+
+handle_call({set, Key, Value}, _From, State) ->
+	UpdatedDict = dict:store(Key, Value, State),
+	{reply, ok, UpdatedDict};
+
 handle_call(_Args, _From, State) ->
 	{reply, ok, State}.
 
