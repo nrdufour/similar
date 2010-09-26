@@ -22,7 +22,12 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
         terminate/2, code_change/3]).
 
+-export([start_link/0]).
+
 -include("similar.hrl").
+
+start_link() ->
+	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 %%====================================================================
 %% gen_server callbacks
@@ -35,10 +40,43 @@
 %% {stop, Reason}
 %% Description: Initiates the server
 %%--------------------------------------------------------------------
-init(_Args) ->
-	Dict = dict:new(),
-
+init([]) ->
+	EtcDir = get_etc_dir(),
+	ConfigFile = filename:join(EtcDir, "similar.config"),
+	Exists = filelib:is_regular(ConfigFile),
+	Dict = case Exists of
+		false ->
+			get_default_configuration();
+		true  ->
+			read_configuration(ConfigFile)
+	end,
 	{ok, Dict}.
+
+read_configuration(ConfigFile) ->
+	List = case parse_file(ConfigFile) of
+		{error, Why} ->
+			throw({error, Why});
+		{ok, Terms} ->
+			Terms
+	end,
+	Dict = dict:from_list(List),
+	Dict.
+
+%% TODO for now just an empty set
+get_default_configuration() ->
+	dict:new().
+
+%% TODO probably a bad idea to fall back to /tmp for security reason
+get_etc_dir() ->
+    {ok, CurrentDir} = file:get_cwd(),
+    Candidate = filename:join(CurrentDir, "etc"),
+    IsDir = filelib:is_dir(Candidate),
+    DataDir = if IsDir ->
+        Candidate;
+    true ->
+        "/tmp"
+    end,
+    DataDir.
 
 %%--------------------------------------------------------------------
 %% Function:
@@ -90,5 +128,9 @@ code_change(_OldVsn, State, _Extra) ->
 
 
 %%====================================================================
+
+parse_file(Filename) ->
+	%% Use Erlang format
+	file:consult(Filename).
 
 %% END

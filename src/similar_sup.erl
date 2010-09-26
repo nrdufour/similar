@@ -30,6 +30,14 @@ init([]) ->
     %%            {alarm_handler, swap},
     %%            {my_alarm_handler, xyz}),
 
+    SimilarConfig = {similar_config,
+        {similar_config, start_link, []},
+        permanent,
+	10000,
+	worker,
+	[similar_config]
+    },
+
     SimilarScenario = {similar_scenario,
         {similar_scenario, start_link, []},
         permanent,
@@ -48,7 +56,7 @@ init([]) ->
 
     Strategies = {
         {one_for_one, 10, 3600},
-	[SimilarEngine, SimilarScenario]
+	[SimilarConfig, SimilarEngine, SimilarScenario]
     },
     
     {ok, Strategies}.
