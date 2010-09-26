@@ -30,14 +30,15 @@
 %%====================================================================
 
 start(_Type, StartArgs) ->
+	similar_log:start(),
+	similar_log:info("Similar Engine is starting!", []),
+
 	Reply = case start_apps([sasl]) of
 		ok ->
 			similar_sup:start_link(StartArgs);
 		{error, Reason} ->
 			{error, Reason}
 	end,
-	similar_log:start(),
-	similar_log:info("Similar Engine is starting!", []),
 	Reply.
 
 stop(_State) ->

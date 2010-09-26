@@ -46,10 +46,13 @@ init([]) ->
 	Exists = filelib:is_regular(ConfigFile),
 	Dict = case Exists of
 		false ->
+			similar_log:info("No configuration file named [~p]! Defaulted!", [ConfigFile]),
 			get_default_configuration();
 		true  ->
+			similar_log:info("Reading configuration file named [~p]!", [ConfigFile]),
 			read_configuration(ConfigFile)
 	end,
+	similar_log:info("Similar Config with ~p entries!", [dict:size(Dict)]),
 	{ok, Dict}.
 
 read_configuration(ConfigFile) ->
