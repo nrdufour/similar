@@ -50,13 +50,21 @@ init([]) ->
 	EtcDir = get_etc_dir(),
 	ConfigFile = filename:join(EtcDir, "similar.config"),
 	Exists = filelib:is_regular(ConfigFile),
+	
+	%% retrieve the default values
+	InitialDict = get_default_configuration(),
 	Dict = case Exists of
 		false ->
 			similar_log:info("No configuration file named [~p]! Defaulted!", [ConfigFile]),
-			get_default_configuration();
+			InitialDict;
 		true  ->
 			similar_log:info("Reading configuration file named [~p]!", [ConfigFile]),
-			read_configuration(ConfigFile)
+			ReadDict = read_configuration(ConfigFile),
+			%% Retain the value provided by the config file
+			%% if the same key is seen in both dicts
+			MergingFun = fun(_Key, _Value1, Value2) -> Value2 end,
+			MergedDict = dict:merge(MergingFun, InitialDict, ReadDict),
+			MergedDict
 	end,
 	similar_log:info("Similar Config with ~p entries!", [dict:size(Dict)]),
 	{ok, Dict}.
