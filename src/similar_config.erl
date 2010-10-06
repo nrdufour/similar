@@ -86,7 +86,6 @@ read_configuration(ConfigFile) ->
 	Dict = dict:from_list(List),
 	Dict.
 
-%% TODO for now just an empty set
 get_default_configuration(EtcDir) ->
 	Dict = dict:new(),
 	
@@ -106,7 +105,7 @@ get_etc_dir() ->
     DataDir = if IsDir ->
         Candidate;
     true ->
-        "/tmp"
+        ?DEFAULT_ETC
     end,
     DataDir.
 

@@ -19,6 +19,8 @@
 
 -define(VERSION, "0.01").
 
+-define(DEFAULT_ETC, "/tmp").
+
 %% Scenario Process Description
 %% Describe a process to start during a scenario
 -record(pdesc,
