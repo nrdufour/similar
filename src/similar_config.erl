@@ -105,6 +105,7 @@ get_etc_dir() ->
     DataDir = if IsDir ->
         Candidate;
     true ->
+		similar_log:info("Default the etc directory to ~p!", [?DEFAULT_ETC]),
         ?DEFAULT_ETC
     end,
     DataDir.
