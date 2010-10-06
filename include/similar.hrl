@@ -17,6 +17,8 @@
 
 -define(LOG_EM, sm_evm_logger).
 
+-define(VERSION, "0.01").
+
 %% Scenario Process Description
 %% Describe a process to start during a scenario
 -record(pdesc,

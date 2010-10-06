@@ -52,7 +52,7 @@ init([]) ->
 	Exists = filelib:is_regular(ConfigFile),
 	
 	%% retrieve the default values
-	InitialDict = get_default_configuration(),
+	InitialDict = get_default_configuration(EtcDir),
 	Dict = case Exists of
 		false ->
 			similar_log:info("No configuration file named [~p]! Defaulted!", [ConfigFile]),
@@ -62,11 +62,18 @@ init([]) ->
 			ReadDict = read_configuration(ConfigFile),
 			%% Retain the value provided by the config file
 			%% if the same key is seen in both dicts
-			MergingFun = fun(_Key, _Value1, Value2) -> Value2 end,
+			MergingFun = fun(Key, Value1, Value2) ->
+								 case Key of
+									 etc -> Value1;
+									 version -> Value1;
+									 _ -> Value2
+								 end
+						 end,
 			MergedDict = dict:merge(MergingFun, InitialDict, ReadDict),
 			MergedDict
 	end,
 	similar_log:info("Similar Config with ~p entries!", [dict:size(Dict)]),
+	similar_log:info("Content: ~p", [dict:to_list(Dict)]),
 	{ok, Dict}.
 
 read_configuration(ConfigFile) ->
@@ -80,8 +87,16 @@ read_configuration(ConfigFile) ->
 	Dict.
 
 %% TODO for now just an empty set
-get_default_configuration() ->
-	dict:new().
+get_default_configuration(EtcDir) ->
+	Dict = dict:new(),
+	
+	%% add etc directory
+	D1 = dict:store(etc, EtcDir, Dict),
+	
+	%% add version
+	D2 = dict:store(version, ?VERSION, D1),
+	
+	D2.
 
 %% TODO probably a bad idea to fall back to /tmp for security reason
 get_etc_dir() ->
