@@ -1,6 +1,6 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -pa ./ebin -pa ./t
+%%! -pa ./ebin -pa ./test
 
 -include_lib("./include/similar.hrl").
 

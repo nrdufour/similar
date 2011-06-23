@@ -1,6 +1,6 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
-%%! -pa ./ebin -pa ./t
+%%! -pa ./ebin -pa ./test
  
 main(_) ->
 	etap:plan(2),
