@@ -1,26 +1,17 @@
-ERL          ?= erl
-ERLC	     ?= erlc
-APP          := similar
 
-#all: deps docs
-all: docs
+TEST_SUPPORT= \
+	test/etap.beam \
+	test/test_util.beam
+
+all:
 	./rebar compile
 
-#deps:
-#	./rebar get-deps
+%.beam: %.erl
+	erlc -o test/ $<
 
-docs:
-	@mkdir -p doc/api
-	@$(ERL) -noshell -run edoc_run application '$(APP)' '"."' '[{preprocess, true},{includes, ["."]}, {dir, "./doc/api"}]'
-
-test: all
-	@$(ERLC) -o t/ t/etap.erl
-	prove t/*.t
-
-cover: all
-	COVER=1 prove t/*.t
-	@$(ERL) -detached -noshell -eval 'etap_report:create()' -s init stop
+check: all $(TEST_SUPPORT)
+	prove test/*.t
 
 clean: 
 	./rebar clean
-	@rm -f t/*.beam
+	rm -f test/*.beam
