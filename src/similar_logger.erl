@@ -1,19 +1,5 @@
-%% Copyright 2009-2010 Nicolas R Dufour.
-%%
-%% Licensed under the Apache License, Version 2.0 (the "License");
-%% you may not use this file except in compliance with the License.
-%% You may obtain a copy of the License at
-%%
-%%     http://www.apache.org/licenses/LICENSE-2.0
-%%
-%% Unless required by applicable law or agreed to in writing, software
-%% distributed under the License is distributed on an "AS IS" BASIS,
-%% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-%% See the License for the specific language governing permissions and
-%% limitations under the License.
-%%
-%% @author Nicolas R Dufour <nrdufour@gmail.com>
-%% @copyright 2009-2010 Nicolas R Dufour.
+% This file is part of Similar released under the MIT license.
+% See the LICENSE file for more information.
 
 -module(similar_logger).
 -behaviour(gen_event).
@@ -22,43 +8,43 @@
 
 %% trace is enabled by default
 init(_Args) ->
-	{ok, true}.
+    {ok, true}.
 
 %% display a simple message
 handle_event(Msg, State) ->
-	if
-		State ->
-			io:format(Msg);
-		true ->
-			true
-	end,
-	{ok, State}.
+    if
+        State ->
+            io:format(Msg);
+        true ->
+            true
+    end,
+    {ok, State}.
 
 %% activate or not the trace
 handle_call({trace, true}, _State) ->
-	{ok, true};
+    {ok, true};
 handle_call({trace, false}, _State) ->
-	{ok, false};
+    {ok, false};
 
 %% returns true if the logger is activated, false otherwise
 handle_call(is_activated, State) ->
-	{{ok,State}, State};
+    {{ok,State}, State};
 
 handle_call(_, State) ->
-	{noreply, State}.
+    {noreply, State}.
 
 %% --
 
 handle_cast(_, State) ->
-	{noreply, State}.
+    {noreply, State}.
 
 handle_info(_Info, State) ->
-	{noreply, State}.
+    {noreply, State}.
 
 code_change(_OldVsn, State, _Extra) ->
-	{ok, State}.
+    {ok, State}.
 
 terminate(_Args, _State) ->
-	ok.
+    ok.
 
 %%% END

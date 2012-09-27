@@ -1,19 +1,5 @@
-%% Copyright 2009-2010 Nicolas R Dufour.
-%%
-%% Licensed under the Apache License, Version 2.0 (the "License");
-%% you may not use this file except in compliance with the License.
-%% You may obtain a copy of the License at
-%%
-%%     http://www.apache.org/licenses/LICENSE-2.0
-%%
-%% Unless required by applicable law or agreed to in writing, software
-%% distributed under the License is distributed on an "AS IS" BASIS,
-%% WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-%% See the License for the specific language governing permissions and
-%% limitations under the License.
-%%
-%% @author Nicolas R Dufour <nrdufour@gmail.com>
-%% @copyright 2009-2010 Nicolas R Dufour.
+% This file is part of Similar released under the MIT license.
+% See the LICENSE file for more information.
 
 -module(similar_config).
 -behaviour(gen_server).
@@ -27,13 +13,13 @@
 -include("similar.hrl").
 
 start_link() ->
-	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 get(Key) ->
-	gen_server:call(?MODULE, {get, Key}).
+    gen_server:call(?MODULE, {get, Key}).
 
 set(Key, Value) ->
-	gen_server:call(?MODULE, {set, Key, Value}).
+    gen_server:call(?MODULE, {set, Key, Value}).
 
 %%====================================================================
 %% gen_server callbacks
@@ -47,55 +33,55 @@ set(Key, Value) ->
 %% Description: Initiates the server
 %%--------------------------------------------------------------------
 init([]) ->
-	EtcDir = get_etc_dir(),
-	ConfigFile = filename:join(EtcDir, "similar.config"),
-	Exists = filelib:is_regular(ConfigFile),
-	
-	%% retrieve the default values
-	InitialDict = get_default_configuration(EtcDir),
-	Dict = case Exists of
-		false ->
-			similar_log:info("No configuration file named [~p]! Defaulted!", [ConfigFile]),
-			InitialDict;
-		true  ->
-			similar_log:info("Reading configuration file named [~p]!", [ConfigFile]),
-			ReadDict = read_configuration(ConfigFile),
-			%% Retain the value provided by the config file
-			%% if the same key is seen in both dicts
-			MergingFun = fun(Key, Value1, Value2) ->
-								 case Key of
-									 etc -> Value1;
-									 version -> Value1;
-									 _ -> Value2
-								 end
-						 end,
-			MergedDict = dict:merge(MergingFun, InitialDict, ReadDict),
-			MergedDict
-	end,
-	similar_log:info("Similar Config with ~p entries!", [dict:size(Dict)]),
-	similar_log:info("Content: ~p", [dict:to_list(Dict)]),
-	{ok, Dict}.
+    EtcDir = get_etc_dir(),
+    ConfigFile = filename:join(EtcDir, "similar.config"),
+    Exists = filelib:is_regular(ConfigFile),
+    
+    %% retrieve the default values
+    InitialDict = get_default_configuration(EtcDir),
+    Dict = case Exists of
+        false ->
+            similar_log:info("No configuration file named [~p]! Defaulted!", [ConfigFile]),
+            InitialDict;
+        true  ->
+            similar_log:info("Reading configuration file named [~p]!", [ConfigFile]),
+            ReadDict = read_configuration(ConfigFile),
+            %% Retain the value provided by the config file
+            %% if the same key is seen in both dicts
+            MergingFun = fun(Key, Value1, Value2) ->
+                                 case Key of
+                                     etc -> Value1;
+                                     version -> Value1;
+                                     _ -> Value2
+                                 end
+                         end,
+            MergedDict = dict:merge(MergingFun, InitialDict, ReadDict),
+            MergedDict
+    end,
+    similar_log:info("Similar Config with ~p entries!", [dict:size(Dict)]),
+    similar_log:info("Content: ~p", [dict:to_list(Dict)]),
+    {ok, Dict}.
 
 read_configuration(ConfigFile) ->
-	List = case parse_file(ConfigFile) of
-		{error, Why} ->
-			throw({error, Why});
-		{ok, Terms} ->
-			Terms
-	end,
-	Dict = dict:from_list(List),
-	Dict.
+    List = case parse_file(ConfigFile) of
+        {error, Why} ->
+            throw({error, Why});
+        {ok, Terms} ->
+            Terms
+    end,
+    Dict = dict:from_list(List),
+    Dict.
 
 get_default_configuration(EtcDir) ->
-	Dict = dict:new(),
-	
-	%% add etc directory
-	D1 = dict:store(etc, EtcDir, Dict),
-	
-	%% add version
-	D2 = dict:store(version, ?VERSION, D1),
-	
-	D2.
+    Dict = dict:new(),
+    
+    %% add etc directory
+    D1 = dict:store(etc, EtcDir, Dict),
+    
+    %% add version
+    D2 = dict:store(version, ?VERSION, D1),
+    
+    D2.
 
 %% TODO probably a bad idea to fall back to /tmp for security reason
 get_etc_dir() ->
@@ -105,7 +91,7 @@ get_etc_dir() ->
     DataDir = if IsDir ->
         Candidate;
     true ->
-		similar_log:info("Default the etc directory to ~p!", [?DEFAULT_ETC]),
+        similar_log:info("Default the etc directory to ~p!", [?DEFAULT_ETC]),
         ?DEFAULT_ETC
     end,
     DataDir.
@@ -121,15 +107,15 @@ get_etc_dir() ->
 %% Description: Handling call messages
 %%--------------------------------------------------------------------
 handle_call({get, Key}, _From, State) ->
-	Value = try dict:fetch(Key, State) catch _:_ -> nil end,
-	{reply, {ok, Value}, State};
+    Value = try dict:fetch(Key, State) catch _:_ -> nil end,
+    {reply, {ok, Value}, State};
 
 handle_call({set, Key, Value}, _From, State) ->
-	UpdatedDict = dict:store(Key, Value, State),
-	{reply, ok, UpdatedDict};
+    UpdatedDict = dict:store(Key, Value, State),
+    {reply, ok, UpdatedDict};
 
 handle_call(_Args, _From, State) ->
-	{reply, ok, State}.
+    {reply, ok, State}.
 
 %%--------------------------------------------------------------------
 %% Function: handle_cast(Msg, State) -> {noreply, State} |
@@ -138,7 +124,7 @@ handle_call(_Args, _From, State) ->
 %% Description: Handling cast messages
 %%--------------------------------------------------------------------
 handle_cast(stop, State) ->
-	{stop, normal, State}.
+    {stop, normal, State}.
 
 %%--------------------------------------------------------------------
 %% Function: handle_info(Info, State) -> {noreply, State} |
@@ -147,7 +133,7 @@ handle_cast(stop, State) ->
 %% Description: Handling all non call/cast messages
 %%--------------------------------------------------------------------
 handle_info(_Info, State) ->
-	{noreply, State}.
+    {noreply, State}.
 
 %%--------------------------------------------------------------------
 %% Function: terminate(Reason, State) -> void()
@@ -157,20 +143,20 @@ handle_info(_Info, State) ->
 %% The return value is ignored.
 %%--------------------------------------------------------------------
 terminate(_Reason, _State) ->
-	ok.
+    ok.
 
 %%--------------------------------------------------------------------
 %% Func: code_change(OldVsn, State, Extra) -> {ok, NewState}
 %% Description: Convert process state when code is changed
 %%--------------------------------------------------------------------
 code_change(_OldVsn, State, _Extra) ->
-	{ok, State}.
+    {ok, State}.
 
 
 %%====================================================================
 
 parse_file(Filename) ->
-	%% Use Erlang format
-	file:consult(Filename).
+    %% Use Erlang format
+    file:consult(Filename).
 
 %% END
