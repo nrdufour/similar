@@ -4,3 +4,4 @@ doc/
 *.dump
 cover/
 ebin/
+deps/
