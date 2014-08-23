@@ -1,4 +1,3 @@
-script: make
 language: erlang
 otp_release:
    - 17.1
